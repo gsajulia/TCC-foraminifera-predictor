@@ -1,0 +1,21 @@
+/* Note: The styles of packages components can be founded by inspecting element,
+doing this allow you change to the attribute that you wants*/
+
+.skin-blue .sidebar-menu>li:hover>a {
+  border-left-color: #145147;
+}
+
+.skin-blue .sidebar-menu>li.active>a {
+  border-left-color: #93d0c7;
+}
+
+h5 {
+    font-family: 'Lobster', cursive;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #ad1d28;
+}
+
+.skin-black .main-header .logo:hover {
+    background-color: #9064f0;
+}
