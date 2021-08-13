@@ -1,21 +1,52 @@
 /* Note: The styles of packages components can be founded by inspecting element,
 doing this allow you change to the attribute that you wants*/
 
-.skin-blue .sidebar-menu>li:hover>a {
-  border-left-color: #145147;
+/* Header */
+.skin-blue .main-header .logo:hover {
+    background-color: #212936;
+    color: #fff;
 }
 
-.skin-blue .sidebar-menu>li.active>a {
-  border-left-color: #93d0c7;
+.skin-blue .main-header .logo {
+    background-color: #212936;
+    color: #fff;
 }
 
-h5 {
-    font-family: 'Lobster', cursive;
-    font-weight: 500;
-    line-height: 1.1;
-    color: #ad1d28;
+hr {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-top: 1px solid #313C4E; 
 }
 
-.skin-black .main-header .logo:hover {
-    background-color: #9064f0;
+.subtitle {
+  color: #b6c1d3;
+  margin: 30px 0 10px 10px;
+}
+
+.skin-blue .sidebar-menu>li, .skin-blue .sidebar-menu>li:hover>a {
+    color: #fff;
+    background: #1e282c;
+    border-left-color: #134f46;
+}
+
+/* Icons style */
+
+.fa-searchengin {
+  font-size: 18px;
+  padding-right: 8px;
+}
+
+.fa-network-wired {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.fa-chart-bar {
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.fa-question {
+  font-size: 16px;
+  margin-right: 8px;
 }
