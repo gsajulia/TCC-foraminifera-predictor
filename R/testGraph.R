@@ -2,23 +2,29 @@ library(fresh)
 
 graph_UI <- function(id) {
   ns <- NS(id)
-  tagList(
-    fluidRow(
-      # A static valueBox
-      valueBox(10 * 2, "New Orders", icon = icon("credit-card"), color = "blue"),
-      
-      # Dynamic valueBoxes
-      valueBoxOutput(ns("progressBox")),
-      
+  fluidPage(
+    tags$div(`class` = "special-title", "Neural Network Model"),
+    "Choose the parameter to generete the network",
+    br(),
+    br(),
+    column(
+      width = 6,
+      selectInput(
+        ns("category"),
+        "Model Category",
+        list(
+          `Basins` = list("NY", "NJ", "CT"),
+          `Periods` = list("WA", "OR", "CA"),
+          `Depth` = list("MN", "WI", "IA")
+        )
+      ),
+      textOutput(ns("result"))
     )
   )
 }
 
 graph <- function(input, output, session) {
-  output$progressBox <- renderValueBox({
-    valueBox(
-      300, "Progress", icon = icon("list"),
-      color = "aqua"
-    )
+  output$result <- renderText({
+    paste("You chose", input$category)
   })
 }

@@ -25,7 +25,6 @@ hr {
 
 .skin-blue .sidebar-menu>li, .skin-blue .sidebar-menu>li:hover>a {
     color: #fff;
-    background: #1e282c;
     border-left-color: #134f46;
 }
 
@@ -50,3 +49,28 @@ hr {
   font-size: 16px;
   margin-right: 8px;
 }
+
+/* Titles */
+
+.box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
+  display: inline-block;
+  color: #000;
+  font-size: 25px;
+  margin: 10px;
+  line-height: 1;
+}
+
+.special-title {
+  font-size: 12px;
+  color: #000;
+  letter-spacing: 1.5px;
+  font-family: Roboto, sans-serif;
+}
+
+/* .medium-title {
+
+}
+
+.small-title {
+
+} */
