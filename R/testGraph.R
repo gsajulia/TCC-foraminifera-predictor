@@ -1,6 +1,6 @@
 library(fresh)
 
-graph_UI <- function(id) {
+predict_init_UI <- function(id) {
   ns <- NS(id)
   fluidPage(
     tags$div(`class` = "special-title", "Neural Network Model"),
@@ -23,7 +23,7 @@ graph_UI <- function(id) {
   )
 }
 
-graph <- function(input, output, session) {
+predict_init <- function(input, output, session) {
   output$result <- renderText({
     paste("You chose", input$category)
   })

@@ -46,7 +46,7 @@ ui <- dashboardPage(
           width = 12,
           column(
             width = 4,
-            graph_UI("graph_test"),
+            predict_init_UI("init_prediction"),
 
           ),
           title = "Predict",

@@ -1,6 +1,6 @@
 server <- function(input, output) {
   callModule(
-    module = graph,
-    id = "graph_test"
+    module = predict_init,
+    id = "init_prediction"
   )
 }
