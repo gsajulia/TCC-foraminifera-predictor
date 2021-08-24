@@ -2,13 +2,11 @@ library(fresh)
 
 predict_init_UI <- function(id) {
   ns <- NS(id)
-  fluidPage(
+  fluidPage(width = 12,
     tags$div(`class` = "special-title", "Neural Network Model"),
-    "Choose the parameter to generete the network",
+    tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
     br(),
     br(),
-    column(
-      width = 6,
       selectInput(
         ns("category"),
         "Model Category",
@@ -19,7 +17,6 @@ predict_init_UI <- function(id) {
         )
       ),
       textOutput(ns("result"))
-    )
   )
 }
 

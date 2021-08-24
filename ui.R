@@ -44,24 +44,32 @@ ui <- dashboardPage(
         tabName = "predict",
         box(
           width = 12,
-          column(
-            width = 4,
-            predict_init_UI("init_prediction"),
-
-          ),
+          column(width = 4,
+                 predict_init_UI("init_prediction")),
+          
           title = "Predict",
           solidHeader = TRUE,
-          column(width = 4,
-          tags$div(`class` = "special-title", "Neural Network Model"),
-          "Choose the parameter to generete the network",
-          br(),
-          "More box content",
+          column(
+            width = 4,
+            tags$div(
+              `class` = "question",
+              HTML('<i class="far fa-question-circle"></i>'),
+              "More information available in the other tabs of the system"
+            ),
+            br(),
+            tags$div(`class` = "highlight-title", "Model Info"),
+            tags$div(`class` = "special-title", "Precision:"),
+            br(),
+            tags$div(`class` = "special-title", "Accuracy:"),
           ),
-          column(width = 4,
-          tags$div(`class` = "special-title", "Neural Network Model"),
-          "Choose the parameter to generete the network",
-          br(),
-          "More box content")
+          
+          column(
+            width = 4,
+            tags$div(`class` = "highlight-title", "New model?"),
+            tags$div(`class` = "medium-title", "If you want to create a new model insert a csv file to train a new neural network"),
+            br(),
+            actionButton("browse", "Browse"),
+          )
           
         )
       ),

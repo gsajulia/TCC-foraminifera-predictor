@@ -50,6 +50,12 @@ hr {
   margin-right: 8px;
 }
 
+.fa-question-circle {
+  margin-right: 15px;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
 /* Titles */
 
 .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
@@ -61,16 +67,25 @@ hr {
 }
 
 .special-title {
-  font-size: 12px;
+  font-size: 15px;
   color: #000;
   letter-spacing: 1.5px;
   font-family: Roboto, sans-serif;
 }
 
-/* .medium-title {
-
+.medium-title {
+  font-size: 16px;
 }
 
-.small-title {
+.highlight-title {
+  font-size: 19px;
+  font-weight: bold;
+  padding-bottom: 14px;
+}
 
-} */
+.question {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+  color: #9e9e9e;
+}
