@@ -64,12 +64,17 @@ predict_init_UI <- function(id) {
         "Hover here to see the expected values or click to download"
       ),
       tags$div(`class` = "medium-title", "Insert .csv file with the foraminifera population"),
-      actionButton(
-        icon = icon("plus"),
-        class = "second-button",
-        ns("browseValues"),
-        "Browse"
-      ),
+      tags$style(".progress-bar{background-color:#3c763d;}"),
+      styledFileInput(ns("browseValues"), "Browse", multiple = FALSE,
+                              labelIcon = "plus", 
+                              progress = FALSE,
+                              accept = c(
+                                "text/csv",
+                                "text/comma-separated-values,text/plain",
+                                ".csv")),
+                                checkboxInput(ns("header"), "Header", TRUE)),
+    mainPanel(
+      tableOutput(ns("contents"))
     )
   )
 }
@@ -89,10 +94,17 @@ predict_init <- function(input, output, session) {
   })
   
   # Insert the initial values with csv
-  observe({
-    if (input$browseValues == 0)
-      return()
-    
-    updateTextInput(session, "path", value = file.choose())
+  output$contents <- renderTable({
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, it will be a data frame with 'name',
+    # 'size', 'type', and 'datapath' columns. The 'datapath'
+    # column will contain the local filenames where the data can
+    # be found.
+    inFile <- input$browseValues
+
+    if (is.null(inFile))
+      return(NULL)
+
+    read.csv(inFile$datapath, header = input$header)
   })
 }
