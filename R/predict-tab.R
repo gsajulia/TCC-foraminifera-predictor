@@ -65,17 +65,21 @@ predict_init_UI <- function(id) {
       ),
       tags$div(`class` = "medium-title", "Insert .csv file with the foraminifera population"),
       tags$style(".progress-bar{background-color:#3c763d;}"),
-      styledFileInput(ns("browseValues"), "Browse", multiple = FALSE,
-                              labelIcon = "plus", 
-                              progress = FALSE,
-                              accept = c(
-                                "text/csv",
-                                "text/comma-separated-values,text/plain",
-                                ".csv")),
-                                checkboxInput(ns("header"), "Header", TRUE)),
-    mainPanel(
-      tableOutput(ns("contents"))
-    )
+      styledFileInput(
+        ns("browseValues"),
+        "Browse",
+        multiple = FALSE,
+        labelIcon = "plus",
+        progress = FALSE,
+        accept = c(
+          "text/csv",
+          "text/comma-separated-values,text/plain",
+          ".csv"
+        )
+      ),
+      checkboxInput(ns("header"), "Header", TRUE)
+    ),
+    uiOutput(outputId = ns("attributes"))
   )
 }
 
@@ -94,17 +98,26 @@ predict_init <- function(input, output, session) {
   })
   
   # Insert the initial values with csv
-  output$contents <- renderTable({
-    # input$file1 will be NULL initially. After the user selects
-    # and uploads a file, it will be a data frame with 'name',
-    # 'size', 'type', and 'datapath' columns. The 'datapath'
-    # column will contain the local filenames where the data can
-    # be found.
+  output$attributes <- renderUI({
     inFile <- input$browseValues
-
+    
     if (is.null(inFile))
       return(NULL)
-
-    read.csv(inFile$datapath, header = input$header)
+    
+    df <- read.csv(inFile$datapath,
+                   header = input$header,
+                   sep = ";")
+    
+    #Names of the attributes from csv
+    dfNames <- names(df)
+    
+    #NA coluns receive 0
+    df[is.na(df)] = 0
+    
+    #Return of population names
+    return(lapply(1:length(dfNames), function(i) {
+      div(dfNames[i])
+    }))
+    
   })
 }
