@@ -51,13 +51,13 @@ hr {
 }
 
 .fa-question-circle {
-  margin-right: 4px;
-  margin-top: 10px;
+  margin-right: 8px;
+  margin-top: 6px;
   font-size: 18px;
 }
 
 .fa-plus {
-  margin-right: px;
+  margin-right: 6px;
 }
 
 /* Titles */
@@ -79,6 +79,7 @@ hr {
 
 .medium-title {
   font-size: 16px;
+  margin-bottom: 2vw;
 }
 
 .highlight-title {
@@ -99,11 +100,18 @@ hr {
   background-color: #82d69b;
 }
 
+.second-button:focus {
+  background-color: #82d69b;
+  border-radius: 20px;
+  border: none;
+}
+
 .question {
   display: flex;
   flex-direction: row;
   width: 250px;
   color: #9e9e9e;
+  margin: 20px;
 }
 
 .box-container {
