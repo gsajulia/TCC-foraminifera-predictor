@@ -43,7 +43,92 @@ ui <- dashboardPage(
         tabName = "predict",
         box(
           width = 12,
-          predict_init_UI("init_prediction"),
+          fluidPage(
+            width = 12,
+            fluidRow(
+              width = 12,
+              column(
+                width = 4,
+                tags$div(`class` = "special-title", "Neural Network Model"),
+                tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
+                selectInput(
+                  "category",
+                  "Model Category",
+                  list(
+                    `Basins` = list("NY", "NJ", "CT"),
+                    `Periods` = list("WA", "OR", "CA"),
+                    `Depth` = list("MN", "WI", "IA")
+                  )
+                ),
+                textOutput("result")
+              ),
+              column(
+                width = 4,
+                align = "center",
+                tags$div(
+                  `class` = "question",
+                  HTML('<i class="far fa-question-circle"></i>'),
+                  "More information available in the other tabs of the system"
+                ),
+                br(),
+                tags$div(`class` = "highlight-title", "Model Info"),
+                tags$div(`class` = "special-title", "Precision:"),
+                br(),
+                tags$div(`class` = "special-title", "Accuracy:"),
+              ),
+              
+              column(
+                width = 4,
+                align = "center",
+                class = "box-container",
+                tags$div(`class` = "highlight-title", "New model?"),
+                tags$div(
+                  `class` = "medium-title",
+                  "If you want to create a new model insert a csv file to train a new neural network"
+                ),
+                
+                styledFileInput(
+                  "browseNNValues",
+                  "Browse",
+                  multiple = FALSE,
+                  labelIcon = "plus",
+                  progress = FALSE,
+                  accept = c(
+                    "text/csv",
+                    "text/comma-separated-values,text/plain",
+                    ".csv"
+                  )
+                ),
+              ),
+            ),
+            fluidRow(
+              width = 12,
+              align = "center",
+              style = 'margin:3vw;',
+              tags$div(
+                `class` = "question",
+                HTML('<i class="far fa-question-circle"></i>'),
+                "Hover here to see the expected values or click to download"
+              ),
+              tags$div(`class` = "medium-title", "Insert .csv file with the foraminifera population"),
+              tags$style(".progress-bar{background-color:#3c763d;}"),
+              styledFileInput(
+                "browseValues",
+                "Browse",
+                multiple = FALSE,
+                labelIcon = "plus",
+                progress = FALSE,
+                accept = c(
+                  "text/csv",
+                  "text/comma-separated-values,text/plain",
+                  ".csv"
+                )
+              ),
+              checkboxInput("header", "Header", TRUE)
+            ),
+            uiOutput(outputId = "attributes"),
+            DT::dataTableOutput(outputId = "table")
+          ),
           
           title = "Predict",
           solidHeader = TRUE,
