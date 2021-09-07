@@ -72,9 +72,9 @@ ui <- dashboardPage(
                 ),
                 br(),
                 tags$div(`class` = "highlight-title", "Model Info"),
-                tags$div(`class` = "special-title", "Precision:"),
+                tags$div(`class` = "special-title", "Accuracy:", textOutput(outputId = "accuracy", container = span)),
                 br(),
-                tags$div(`class` = "special-title", "Accuracy:"),
+                tags$div(`class` = "special-title", "Precision:"),
               ),
               
               column(

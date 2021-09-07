@@ -17,6 +17,10 @@ server <- function(input, output) {
     
     obj = neuralNetwork(null, null)
     
+    output$accuracy  <- renderText({ 
+      paste(round(obj@accuracy, digits = 2), "%")
+    })
+
     #Retorna a tabela paginada
     return(DT::datatable(obj@table))
   })
