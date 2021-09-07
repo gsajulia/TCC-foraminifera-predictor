@@ -46,11 +46,17 @@ predict_init_UI <- function(id) {
           "If you want to create a new model insert a csv file to train a new neural network"
         ),
         
-        actionButton(
-          icon = icon("plus"),
-          class = "second-button",
-          ns("browseModel"),
-          "Browse"
+        styledFileInput(
+          ns("browseNNValues"),
+          "Browse",
+          multiple = FALSE,
+          labelIcon = "plus",
+          progress = FALSE,
+          accept = c(
+            "text/csv",
+            "text/comma-separated-values,text/plain",
+            ".csv"
+          )
         ),
       ),
     ),
@@ -79,7 +85,8 @@ predict_init_UI <- function(id) {
       ),
       checkboxInput(ns("header"), "Header", TRUE)
     ),
-    uiOutput(outputId = ns("attributes"))
+    uiOutput(outputId = ns("attributes")),
+    DT::dataTableOutput(outputId = ns("table"))
   )
 }
 
@@ -90,11 +97,20 @@ predict_init <- function(input, output, session) {
   })
   
   # Create new NN model by inserting csv
-  observe({
-    if (input$browseModel == 0)
-      return()
+  output$table <- DT::renderDataTable({
+    inFile <- input$browseNNValues
     
-    updateTextInput(session, "path", value = file.choose())
+    if (is.null(inFile))
+      return(NULL)
+    
+    df <- read.csv(inFile$datapath,
+                   header = input$header,
+                   sep = ",")
+    
+    obj = neuralNetwork(null, null)
+    
+    #Retorna a tabela paginada
+    return(DT::datatable(obj@table))
   })
   
   # Insert the initial values with csv
