@@ -126,8 +126,7 @@ ui <- dashboardPage(
               ),
               checkboxInput("header", "Header", TRUE)
             ),
-            uiOutput(outputId = "attributes"),
-            DT::dataTableOutput(outputId = "table")
+            uiOutput(outputId = "attributes")
           ),
           
           title = "Predict",
@@ -142,6 +141,7 @@ ui <- dashboardPage(
         box(
           title = "Inputs",
           solidHeader = TRUE,
+          DT::dataTableOutput(outputId = "table"),
           "Box content here",
           br(),
           "More box content"

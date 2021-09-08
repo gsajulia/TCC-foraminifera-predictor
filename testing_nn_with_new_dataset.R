@@ -96,9 +96,11 @@ nn.results <- neuralnet::compute(nn, temp_test)
 actual <- test[outputExpected]
 prediction <- nn.results$net.result
 
-#accuracy <- ifelse(prediction<actual, (prediction/actual)*100, ((prediction/actual)-2)*-100)
+accuracy <- ifelse(prediction<actual, (prediction/actual)*100, ((prediction/actual)-2)*-100)
 
-# results <- data.frame(actual = actualData, prediction = predictionData, accuracy = accuracy)
+sprintf("Médiaaa: %i", mean(accuracy))
+
+results <- data.frame(actual = actualData, prediction = predictionData, accuracy = accuracy)
 
 ##Option 3
 
