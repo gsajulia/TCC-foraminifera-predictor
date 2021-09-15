@@ -6,13 +6,6 @@ library(e1071)
 library(dplyr)
 
 neuralNetwork <- function(outputExpected, df) {
-    outputExpected = "RES_Annual_0m"
-
-    df <- read.csv("last_forams_data.csv",
-                header = TRUE,
-                sep = ",") 
-
-
     # Keep only the RES column of outputExpected
     outputResult = df[, outputExpected]
     df <- df[, -grep("RES", colnames(df))]
@@ -67,15 +60,15 @@ neuralNetwork <- function(outputExpected, df) {
     # Denormalizing values from result
     desnormResult <- data.frame(min(df[, outputExpected]) + predict$net.result * (max(df[, outputExpected]) - min(df[, outputExpected])))
 
-    # Predicions as a new column of dataframe
-    colnames(result) <- c("Prediction")
-    result <- predict$net.result
-
     colnames(desnormResult) <- c("Denormalized prediction")
 
     # Table of all informations
     finalResult <- cbind(desnormTest, desnormResult)
-
+    
+    # Test the resulting output of predict and the real value
+    temp_test <- subset(test, select = c(dfNames[1:length(dfNames)]))
+    head(temp_test)
+    nn.results <- neuralnet::compute(nn, temp_test)
 
     # Calculating how accurate the model is
 

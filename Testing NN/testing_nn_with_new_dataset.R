@@ -111,7 +111,6 @@ comparison=data.frame(predicted,actual,deviation)
 #This if is to avoid the problem with division with 0 resulting in Inf
 deviation<- deviation[!abs(deviation) == Inf]
 accuracy=1-abs(mean(data.matrix(deviation)))
-#accuracy<-accuracy[!df1$Name=="George" | df1$Name=="Andrea"),]
 sprintf("Error: %f", nn$result.matrix[1,])
 sprintf("Médiaaa: %f", mean(accuracy))
 sprintf("%1.2f%%", accuracy*100)

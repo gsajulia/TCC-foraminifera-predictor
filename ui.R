@@ -40,6 +40,7 @@ ui <- dashboardPage(
     tags$link(rel = "stylesheet",
               href = "https://fonts.googleapis.com/css2?family=Qahiri&display=swap"),
     tabItems(
+      # Predic tab
       tabItem(
         tabName = "predict",
         box(
@@ -54,14 +55,27 @@ ui <- dashboardPage(
                 tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
                 selectInput(
                   "category",
-                  "Model Category",
+                  "Model Period",
                   list(
-                    `Basins` = list("NY", "NJ", "CT"),
-                    `Periods` = list("WA", "OR", "CA"),
-                    `Depth` = list("MN", "WI", "IA")
+                    "Annual",
+                    "Jan-Mar",
+                    "Jul-Sep"
                   )
                 ),
-                textOutput("result")
+                selectInput(
+                  "depth",
+                  "Model Depth",
+                  list(
+                    "0m",
+                   "50m",
+                    "75m",
+                    "100m",
+                    "0-75m",
+                    "0-200m"
+                  )
+                ),
+                textOutput("result"),
+                textOutput("depthOutput")
               ),
               column(
                 width = 4,
@@ -135,7 +149,7 @@ ui <- dashboardPage(
           
         )
       ),
-      
+      # Neural network tab
       tabItem(
         tabName = "neuralNetwork",
         h2("Widgets tab content"),

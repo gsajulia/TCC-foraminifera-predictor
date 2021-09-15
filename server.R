@@ -3,6 +3,10 @@ server <- function(input, output) {
   output$result <- renderText({
     paste("You chose", input$category)
   })
+
+  output$depthOutput <- renderText({
+    paste("RES", input$category, input$depth , sep = "_", collapse = NULL)
+  })
   
   # Create new NN model by inserting csv
   output$table <- DT::renderDataTable({
@@ -14,8 +18,8 @@ server <- function(input, output) {
     df <- read.csv(inFile$datapath,
                    header = input$header,
                    sep = ",")
-    
-    obj = neuralNetwork(null, null)
+    obj = neuralNetwork(
+      paste("RES", input$category, input$depth , sep = "_", collapse = NULL), df)
     
     output$accuracy  <- renderText({ 
       paste(round(obj@accuracy, digits = 2), "%")
