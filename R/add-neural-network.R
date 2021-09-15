@@ -79,40 +79,18 @@ neuralNetwork <- function(outputExpected, df) {
 
     # Calculating how accurate the model is
 
-    ##Option 1
-
-    # Values that as above of determinate pro probability
-    prob <- predict$net.result
-    pred <- ifelse(prob>0.9, 1, 0)
-    predQuantity <- length(pred[pred == 1])
-    sprintf("/n/nSão: %i de %i ", predQuantity, length(pred))
-
-    # Test the resulting output of predict and the real value
-    temp_test <- subset(test, select = c(dfNames[1:length(dfNames)]))
-    head(temp_test)
-    nn.results <- neuralnet::compute(nn, temp_test)
-
-    ##Option 2
-
-    actual <- test[outputExpected]
-    prediction <- nn.results$net.result
-
-    #accuracy <- ifelse(prediction<actual, (prediction/actual)*100, ((prediction/actual)-2)*-100)
-
-    # results <- data.frame(actual = actualData, prediction = predictionData, accuracy = accuracy)
-
-    ##Option 3
-
     results <- data.frame(actual = test[outputExpected], prediction = nn.results$net.result)
-
-    ##Option 4
 
     predicted=desnormResult
     actual=desnormTest[outputExpected]
     comparison=data.frame(predicted,actual)
     deviation=((actual-predicted)/actual)
     comparison=data.frame(predicted,actual,deviation)
+    
+    #This if is to avoid the problem with division with 0 resulting in Inf
+    deviation<- deviation[!abs(deviation) == Inf]
     accuracy=1-abs(mean(data.matrix(deviation)))
+    sprintf("Error: %f", nn$result.matrix[1,])
     sprintf("%1.2f%%", accuracy*100)
 
     setClass("nnParams", slots=list(accuracy="numeric", table="data.frame", testAndPrediction="data.frame"))

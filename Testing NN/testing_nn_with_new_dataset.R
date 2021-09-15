@@ -55,7 +55,6 @@ nn = neuralnet(str_c("RES_Annual_0m", " ~ ", formula), data=train,
                lifesign = "none", threshold = 0.01,
 );
 
-nn$result.matrix
 # plot neural network
 plot(nn)
 
@@ -98,20 +97,25 @@ prediction <- nn.results$net.result
 
 accuracy <- ifelse(prediction<actual, (prediction/actual)*100, ((prediction/actual)-2)*-100)
 
-sprintf("Médiaaa: %i", mean(accuracy))
+# sprintf("Médiaaa: %i", mean(accuracy))
 
-results <- data.frame(actual = actualData, prediction = predictionData, accuracy = accuracy)
+results <- data.frame(actual = actual, prediction = prediction, accuracy = accuracy)
 
 ##Option 3
-
-results <- data.frame(actual = test[outputExpected], prediction = nn.results$net.result)
-
-##Option 4
 
 predicted=desnormResult
 actual=desnormTest[outputExpected]
 comparison=data.frame(predicted,actual)
 deviation=((actual-predicted)/actual)
 comparison=data.frame(predicted,actual,deviation)
+#This if is to avoid the problem with division with 0 resulting in Inf
+deviation<- deviation[!abs(deviation) == Inf]
 accuracy=1-abs(mean(data.matrix(deviation)))
+#accuracy<-accuracy[!df1$Name=="George" | df1$Name=="Andrea"),]
+sprintf("Error: %f", nn$result.matrix[1,])
+sprintf("Médiaaa: %f", mean(accuracy))
 sprintf("%1.2f%%", accuracy*100)
+
+# Result Plot
+plot(test[outputExpected][,1], predict$net.result[,1],col='red',main='Real vs predicted NN', xlab="Real", ylab="DNN")
+abline(0,1,lwd=2)

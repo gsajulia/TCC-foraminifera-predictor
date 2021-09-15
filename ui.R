@@ -1,4 +1,5 @@
 library(shinydashboard)
+library(fresh)
 
 my_theme <- create_theme(adminlte_color(light_blue = "#28A390"),
                          adminlte_sidebar(dark_bg = "#212936"))
