@@ -1,9 +1,11 @@
 library(shinydashboard)
 library(fresh)
+library(shinycssloaders)
 
 my_theme <- create_theme(adminlte_color(light_blue = "#28A390"),
                          adminlte_sidebar(dark_bg = "#212936"))
 
+options(spinner.color="#53b5a6", spinner.color.background="#ffffff", spinner.size=1)
 
 ui <- dashboardPage(
   dashboardHeader(title = "Foraminiferal"),
@@ -58,8 +60,8 @@ ui <- dashboardPage(
                   "Model Period",
                   list(
                     "Annual",
-                    "Jan-Mar",
-                    "Jul-Sep"
+                    "jan-mar",
+                    "jul-sep"
                   )
                 ),
                 selectInput(
@@ -67,10 +69,11 @@ ui <- dashboardPage(
                   "Model Depth",
                   list(
                     "0m",
-                   "50m",
+                    "50m",
                     "75m",
                     "100m",
                     "0-75m",
+                    "0-100m",
                     "0-200m"
                   )
                 ),
@@ -89,7 +92,7 @@ ui <- dashboardPage(
                 tags$div(`class` = "highlight-title", "Model Info"),
                 tags$div(`class` = "special-title", "Accuracy:", textOutput(outputId = "accuracy", container = span)),
                 br(),
-                tags$div(`class` = "special-title", "Precision:"),
+                  shinycssloaders::withSpinner(tags$div(`class` = "special-title", "Precision:"))
               ),
               
               column(
@@ -156,7 +159,7 @@ ui <- dashboardPage(
         box(
           title = "Inputs",
           solidHeader = TRUE,
-          DT::dataTableOutput(outputId = "table"),
+          shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "table"), type=2),
           "Box content here",
           br(),
           "More box content"
