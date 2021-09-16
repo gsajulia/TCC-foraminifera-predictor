@@ -5,12 +5,13 @@ library(caret)
 library(e1071)
 library(dplyr)
 
-outputExpected = "RES_Annual_0m"
+outputExpected = "RES_jul-sep_0-100m"
 
-df <- read.csv("last_forams_data.csv",
+df <- read.csv("last_forams_data_clean_last.csv",
                header = TRUE,
                sep = ",")
 
+outputExpected = gsub("-", ".", outputExpected, fixed = TRUE)
 
 # Keep only the RES column of outputExpected
 outputResult = df[, outputExpected]
@@ -49,7 +50,7 @@ desnormTest <- data.frame(min(df[, outputExpected]) + test[, outputExpected] * (
 desnormTest <- data.frame(min(df) + test * (max(df) - min(df)))  
 
 # Neural Network equation
-nn = neuralnet(str_c("RES_Annual_0m", " ~ ", formula), data=train,
+nn = neuralnet(str_c(outputExpected, " ~ ", formula), data=train,
                algorithm = "rprop+", startweights = NULL,
                hidden = c(5, 2), stepmax = 1e+06,
                lifesign = "none", threshold = 0.01,

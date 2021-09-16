@@ -6,11 +6,13 @@ library(e1071)
 library(dplyr)
 
 neuralNetwork <- function(outputExpected, df) {
+    
+    outputExpected = gsub("-", ".", outputExpected, fixed = TRUE)
     # Keep only the RES column of outputExpected
     outputResult = df[, outputExpected]
     df <- df[, -grep("RES", colnames(df))]
     df[outputExpected] <- outputResult
-
+    
     # Names of the attributes from csv
     dfNames <- names(df)
 
@@ -43,7 +45,7 @@ neuralNetwork <- function(outputExpected, df) {
     desnormTest <- data.frame(min(df) + test * (max(df) - min(df)))  
 
     # Neural Network equation
-    nn = neuralnet(str_c("RES_Annual_0m", " ~ ", formula), data=train,
+    nn = neuralnet(str_c(outputExpected, " ~ ", formula), data=train,
                 algorithm = "rprop+", startweights = NULL,
                 hidden = c(5, 2), stepmax = 1e+06,
                 lifesign = "none", threshold = 0.01,
