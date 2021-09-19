@@ -155,14 +155,11 @@ ui <- dashboardPage(
       # Neural network tab
       tabItem(
         tabName = "neuralNetwork",
-        h2("Widgets tab content"),
         box(
+          width = 800,
           title = "Inputs",
           solidHeader = TRUE,
-          shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "table"), type=2),
-          "Box content here",
-          br(),
-          "More box content"
+          shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "table", width = "74vw"), type=2)
         )
       )
     )

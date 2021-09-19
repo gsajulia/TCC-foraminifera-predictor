@@ -26,7 +26,7 @@ server <- function(input, output) {
     })
 
     #Retorna a tabela paginada
-    return(DT::datatable(obj@table))
+    return(DT::datatable(obj@table, options = list(scrollX = TRUE)))
   })
   
   # Insert the initial values with csv
