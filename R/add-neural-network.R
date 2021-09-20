@@ -33,9 +33,9 @@ neuralNetwork <- function(outputExpected, df) {
 
     # Creating formula that pick the names of the columns
     # And concat each one with "+"
-    formula = str_c(dfNames[1:length(dfNames)],
+    formula = str_c(dfNames[!dfNames %in% outputExpected],
                     collapse = "+");
-
+                    
     # Separation of dataset, train of 90% and test of 10%
     index = sample(seq_len(nrow(dataset)), size = 0.90 * nrow(dataset))
     train <- dataset[index,];
@@ -90,8 +90,6 @@ neuralNetwork <- function(outputExpected, df) {
 
     setClass("nnParams", slots=list(accuracy="numeric", table="data.frame", testAndPrediction="data.frame"))
     obj <- new("nnParams", accuracy=accuracy*100, table=finalResult, testAndPrediction=results)
-    # obj@accuracy <- accuracy*100
-    # obj@table <- finalResult
-    # obj@testAndPrediction <- results
+
     return(obj)
 }          
