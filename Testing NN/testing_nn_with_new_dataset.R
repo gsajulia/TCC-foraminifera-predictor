@@ -38,7 +38,7 @@ dataset <- as.data.frame(lapply(df, normalize))
 
 # Creating formula that pick the names of the columns
 # And concat each one with "+"
-formula = str_c(dfNames[1:length(dfNames)],
+formula = str_c(dfNames[!dfNames %in% outputExpected],
                 collapse = "+");
 
 # Separation of dataset, train of 90% and test of 10%
@@ -119,3 +119,9 @@ sprintf("%1.2f%%", accuracy*100)
 # Result Plot
 plot(test[outputExpected][,1], predict$net.result[,1],col='red',main='Real vs predicted NN', xlab="Real", ylab="DNN")
 abline(0,1,lwd=2)
+
+
+# Predict function (separate file)
+teste = df[, -grep(outputExpected, colnames(df))]
+predict = neuralnet::compute(nn, teste);
+cbind(teste, Valor_predito=predict$net.result)
