@@ -1,4 +1,14 @@
+library(vroom)
+
 server <- function(input, output) {
+
+  # PREDICT
+
+  # Checkbox decide between new model or default model
+  output$newFileName <- renderText({ 
+    paste(input$browseNNValues$name)
+  })
+
   # Input the category of the desire NN
   output$result <- renderText({
     paste("You chose", input$category)
@@ -8,27 +18,60 @@ server <- function(input, output) {
     paste("RES", input$category, input$depth , sep = "_", collapse = NULL)
   })
   
-  # Create new NN model by inserting csv
-  output$table <- DT::renderDataTable({
+  # New model #####################################################
+  data <- reactive({
+    req(input$browseNNValues)
+
+    ext <- tools::file_ext(input$browseNNValues$name)
+
     inFile <- input$browseNNValues
     
     if (is.null(inFile))
       return(NULL)
     
-    df <- read.csv(inFile$datapath,
-                   header = input$header,
-                   sep = ",")
-    obj = neuralNetwork(
-      paste("RES", input$category, input$depth , sep = "_", collapse = NULL), df)
-    
-    output$accuracy  <- renderText({ 
-      paste(round(obj@accuracy, digits = 2), "%")
-    })
+    switch(ext,
+      csv = vroom::vroom(input$browseNNValues$datapath, delim = ","),
+      validate("Invalid file; Please upload a .csv")
+    )
 
-    #Retorna a tabela paginada
-    return(DT::datatable(obj@table, options = list(scrollX = TRUE)))
+    df <- read.csv(inFile$datapath,
+                header = input$header,
+                sep = ",")
+
+    return (df)
   })
   
+  # New model Neural network
+  # nn <- reactive({
+  #     obj = neuralNetwork(
+  #     paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
+  # })
+
+  nn <- eventReactive(input$goButton, {
+      showModal(modalDialog("Doing a function", footer=NULL))
+
+      obj = neuralNetwork(
+      paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
+      
+      removeModal()
+
+      return (obj)
+  })
+  
+  # New model accuracy
+  output$accuracy  <- renderText({
+    obj = nn()
+    paste(round(obj@accuracy, digits = 2), "%")
+  })
+
+  ###########################################################################
+
+  # NEURAL NETWORK INFO
+  output$table <- DT::renderDataTable({
+    obj = nn()
+    return(DT::datatable(obj@table, options = list(scrollX = TRUE)))
+  })
+
   # Insert the initial values with csv
   output$attributes <- renderUI({
     inFile <- input$browseValues

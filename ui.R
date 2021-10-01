@@ -55,6 +55,7 @@ ui <- dashboardPage(
                 width = 4,
                 tags$div(`class` = "special-title", "Neural Network Model"),
                 tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
+                tags$div(`class` = "special-title", "Nn:", textOutput(outputId = "newFileName", container = span)),
                 selectInput(
                   "category",
                   "Model Period",
@@ -78,7 +79,8 @@ ui <- dashboardPage(
                   )
                 ),
                 textOutput("result"),
-                textOutput("depthOutput")
+                textOutput("depthOutput"),
+                actionButton("goButton", "Go!"),
               ),
               column(
                 width = 4,
@@ -92,7 +94,7 @@ ui <- dashboardPage(
                 tags$div(`class` = "highlight-title", "Model Info"),
                 tags$div(`class` = "special-title", "Accuracy:", textOutput(outputId = "accuracy", container = span)),
                 br(),
-                  shinycssloaders::withSpinner(tags$div(`class` = "special-title", "Precision:"))
+                  tags$div(`class` = "special-title", "Precision:")
               ),
               
               column(
@@ -133,6 +135,7 @@ ui <- dashboardPage(
               styledFileInput(
                 "browseValues",
                 "Browse",
+                placeholder = "No file selected",
                 multiple = FALSE,
                 labelIcon = "plus",
                 progress = FALSE,
