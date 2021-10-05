@@ -88,8 +88,5 @@ neuralNetwork <- function(outputExpected, df) {
     sprintf("Error: %f", nn$result.matrix[1,])
     sprintf("%1.2f%%", accuracy*100)
 
-    setClass("nnParams", slots=list(accuracy="numeric", table="data.frame", testAndPrediction="data.frame"))
-    obj <- new("nnParams", accuracy=accuracy*100, table=finalResult, testAndPrediction=results)
-
-    return(obj)
+    return(list(`accuracy`=accuracy*100, `table`=finalResult, `testAndPrediction`=results, `nn`= nn))
 }          

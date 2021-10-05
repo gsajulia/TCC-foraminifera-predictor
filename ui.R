@@ -147,7 +147,8 @@ ui <- dashboardPage(
               ),
               checkboxInput("header", "Header", TRUE)
             ),
-            uiOutput(outputId = "attributes")
+            shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "valuesTable", width = "74vw"), type=2)
+            #uiOutput(outputId = "attributes")
           ),
           
           title = "Predict",
