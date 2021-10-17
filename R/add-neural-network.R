@@ -89,4 +89,4 @@ neuralNetwork <- function(outputExpected, df) {
     sprintf("%1.2f%%", accuracy*100)
 
     return(list(`accuracy`=accuracy*100, `table`=finalResult, `testAndPrediction`=results, `nn`= nn))
-}          
+}
