@@ -9,11 +9,6 @@ server <- function(input, output) {
     paste(input$browseNNValues$name)
   })
 
-  # Input the category of the desire NN
-  output$result <- renderText({
-    paste("You chose", input$category)
-  })
-
   output$depthOutput <- renderText({
     paste("RES", input$category, input$depth , sep = "_", collapse = NULL)
   })

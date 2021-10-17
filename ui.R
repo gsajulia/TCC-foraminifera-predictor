@@ -5,7 +5,11 @@ library(shinycssloaders)
 my_theme <- create_theme(adminlte_color(light_blue = "#28A390"),
                          adminlte_sidebar(dark_bg = "#212936"))
 
-options(spinner.color="#53b5a6", spinner.color.background="#ffffff", spinner.size=1)
+options(
+  spinner.color = "#53b5a6",
+  spinner.color.background = "#ffffff",
+  spinner.size = 1
+)
 
 ui <- dashboardPage(
   dashboardHeader(title = "Foraminiferal"),
@@ -53,53 +57,8 @@ ui <- dashboardPage(
               width = 12,
               column(
                 width = 4,
-                tags$div(`class` = "special-title", "Neural Network Model"),
-                tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
-                tags$div(`class` = "special-title", "Nn:", textOutput(outputId = "newFileName", container = span)),
-                selectInput(
-                  "category",
-                  "Model Period",
-                  list(
-                    "Annual",
-                    "jan-mar",
-                    "jul-sep"
-                  )
-                ),
-                selectInput(
-                  "depth",
-                  "Model Depth",
-                  list(
-                    "0m",
-                    "50m",
-                    "75m",
-                    "100m",
-                    "0-75m",
-                    "0-100m",
-                    "0-200m"
-                  )
-                ),
-                textOutput("result"),
-                textOutput("depthOutput"),
-                actionButton("goButton", "Go!"),
-              ),
-              column(
-                width = 4,
                 align = "center",
                 tags$div(
-                  `class` = "question",
-                  HTML('<i class="far fa-question-circle"></i>'),
-                  "More information available in the other tabs of the system"
-                ),
-                br(),
-                tags$div(`class` = "highlight-title", "Model Info"),
-                tags$div(`class` = "special-title", "Accuracy:", textOutput(outputId = "accuracy", container = span)),
-                br(),
-                  tags$div(`class` = "special-title", "Precision:")
-              ),
-              
-              column(
-                width = 4,
-                align = "center",
                 class = "box-container",
                 tags$div(`class` = "highlight-title", "New model?"),
                 tags$div(
@@ -111,14 +70,68 @@ ui <- dashboardPage(
                   "browseNNValues",
                   "Browse",
                   multiple = FALSE,
+                  btnStyle = "file-btn-light",
                   labelIcon = "plus",
                   progress = FALSE,
-                  accept = c(
-                    "text/csv",
-                    "text/comma-separated-values,text/plain",
-                    ".csv"
-                  )
+                  accept = c("text/csv",
+                             "text/comma-separated-values,text/plain",
+                             ".csv")
                 ),
+              ),),
+              column(
+                width = 4,
+                style = "    display: flex;
+    justify-content: center;",
+                tags$div(
+                  tags$div(`class` = "special-title", "Neural Network Model"),
+                  tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
+                  tags$div(
+                    `class` = "special-title",
+                    "Nn:",
+                    textOutput(outputId = "newFileName", container = span)
+                  ),
+                  selectInput(
+                    "category",
+                    "Model Period",
+                    list("Annual",
+                         "jan-mar",
+                         "jul-sep")
+                  ),
+                  selectInput(
+                    "depth",
+                    "Model Depth",
+                    list("0m",
+                         "50m",
+                         "75m",
+                         "100m",
+                         "0-75m",
+                         "0-100m",
+                         "0-200m")
+                  ),
+                  tags$div( `class` = "action-button-container",
+                    "You Chose",
+                    textOutput("depthOutput"),
+                    br(),
+                    actionButton("goButton", "PREDICT", class = "file-btn-main"))
+                )
+              ),
+              column(
+                width = 4,
+                align = "center",
+                tags$div(
+                  `class` = "question",
+                  HTML('<i class="far fa-question-circle"></i>'),
+                  "More information available in the other tabs of the system"
+                ),
+                br(),
+                tags$div(`class` = "highlight-title", "Model Info"),
+                tags$div(
+                  `class` = "special-title",
+                  "Accuracy:",
+                  textOutput(outputId = "accuracy", container = span)
+                ),
+                br(),
+                tags$div(`class` = "special-title", "Precision:")
               ),
             ),
             fluidRow(
@@ -139,11 +152,9 @@ ui <- dashboardPage(
                 multiple = FALSE,
                 labelIcon = "plus",
                 progress = FALSE,
-                accept = c(
-                  "text/csv",
-                  "text/comma-separated-values,text/plain",
-                  ".csv"
-                )
+                accept = c("text/csv",
+                           "text/comma-separated-values,text/plain",
+                           ".csv")
               ),
               checkboxInput("header", "Header", TRUE)
             ),
@@ -162,7 +173,8 @@ ui <- dashboardPage(
           width = 800,
           title = "Inputs",
           solidHeader = TRUE,
-          shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "table", width = "74vw"), type=2)
+          shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "table", width = "74vw"), type =
+                                         2)
         )
       )
     )

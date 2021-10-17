@@ -1,5 +1,5 @@
 styledFileInput <- function(inputId, label = NULL, labelIcon = NULL, multiple = FALSE, 
-                       accept = NULL, width = NULL, progress = TRUE, ...) {
+                       accept = NULL, width = NULL, progress = TRUE, btnStyle = "file-btn", ...) {
   # add class fileinput_2 defined in UI to hide the inputTag
   inputTag <- tags$input(id = inputId, name = inputId, type = "file", 
                          class = "fileinput_2")
@@ -12,7 +12,7 @@ styledFileInput <- function(inputId, label = NULL, labelIcon = NULL, multiple = 
     inputTag,
     # label customized with an action button
     tags$label(`for` = inputId, div(icon(labelIcon), label, 
-                class = "btn file-btn action-button")),
+                class = paste("btn", btnStyle, "action-button", sep=" "))),
     # optionally display a progress bar
     if(progress)
       tags$div(id = paste(inputId, "_progress", sep = ""), 

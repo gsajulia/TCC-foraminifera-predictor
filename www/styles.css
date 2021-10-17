@@ -13,17 +13,18 @@ doing this allow you change to the attribute that you wants*/
 }
 
 hr {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  border-top: 1px solid #313C4E; 
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-top: 1px solid #313c4e;
 }
 
 .subtitle {
-  color: #b6c1d3;
-  margin: 30px 0 10px 10px;
+    color: #b6c1d3;
+    margin: 30px 0 10px 10px;
 }
 
-.skin-blue .sidebar-menu>li, .skin-blue .sidebar-menu>li:hover>a {
+.skin-blue .sidebar-menu > li,
+.skin-blue .sidebar-menu > li:hover > a {
     color: #fff;
     border-left-color: #134f46;
 }
@@ -31,114 +32,144 @@ hr {
 /* Icons style */
 
 .fa-searchengin {
-  font-size: 18px;
-  padding-right: 8px;
+    font-size: 18px;
+    padding-right: 8px;
 }
 
 .fa-network-wired {
-  font-size: 18px;
-  margin-right: 8px;
+    font-size: 18px;
+    margin-right: 8px;
 }
 
 .fa-chart-bar {
-  font-size: 18px;
-  margin-right: 8px;
+    font-size: 18px;
+    margin-right: 8px;
 }
 
 .fa-question {
-  font-size: 16px;
-  margin-right: 8px;
+    font-size: 16px;
+    margin-right: 8px;
 }
 
 .fa-question-circle {
-  margin-right: 8px;
-  margin-top: 6px;
-  font-size: 18px;
+    margin-right: 8px;
+    margin-top: 6px;
+    font-size: 18px;
 }
 
 .fa-plus {
-  margin-right: 6px;
+    margin-right: 6px;
 }
 
 /* Titles */
 
-.box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
-  display: inline-block;
-  color: #000;
-  font-size: 25px;
-  margin: 10px;
-  line-height: 1;
+.box-header > .fa,
+.box-header > .glyphicon,
+.box-header > .ion,
+.box-header .box-title {
+    display: inline-block;
+    color: #000;
+    font-size: 25px;
+    margin: 10px;
+    line-height: 1;
 }
 
 .special-title {
-  font-size: 15px;
-  color: #000;
-  letter-spacing: 1.5px;
-  font-family: Roboto, sans-serif;
+    font-size: 15px;
+    color: #000;
+    letter-spacing: 1.5px;
+    font-family: Roboto, sans-serif;
 }
 
 .medium-title {
-  font-size: 16px;
-  margin-bottom: 2vw;
+    font-size: 16px;
+    margin-bottom: 2vw;
 }
 
 .highlight-title {
-  font-size: 19px;
-  font-weight: bold;
-  padding-bottom: 14px;
+    font-size: 19px;
+    font-weight: bold;
+    padding-bottom: 14px;
 }
 
 /* Buttons */
 .second-button {
-  background-color: #6FD08C;
-  color: rgba(0,0,0, 0.87);
-  font-weight: bold;
-  border-radius: 20px;
+    background-color: #6fd08c;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+    border-radius: 20px;
 }
 
 .second-button:hover {
-  background-color: #82d69b;
+    background-color: #82d69b;
 }
 
 .second-button:focus {
-  background-color: #82d69b;
-  border-radius: 20px;
-  border: none;
+    background-color: #82d69b;
+    border-radius: 20px;
+    border: none;
 }
 
 .question {
-  display: flex;
-  flex-direction: row;
-  width: 250px;
-  color: #9e9e9e;
-  margin: 20px;
+    display: flex;
+    flex-direction: row;
+    width: 250px;
+    color: #9e9e9e;
+    margin: 20px;
 }
 
 .box-container {
-  border: 1px solid #e0e0e0;
-  max-width: 300px;
-  padding: 25px;
-  background-color: #fafffa;
-  border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    max-width: 300px;
+    padding: 25px;
+    margin-top: 1vw;
+    background-color: #fafffa;
+    border-radius: 6px;
+    margin-bottom: 30px;
 }
 
 div.box-body .shiny-input-container {
-  max-width: 300px;
+    max-width: 300px;
 }
 
 .file-btn {
-  background-color: #6FD08C;
-  color: rgba(0,0,0, 0.87);
-  font-weight: bold;
-  border-radius: 20px;
+    background-color: #6fd08c;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+.file-btn-light {
+    background-color: #9fd4af;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+    border-radius: 20px;
+}
+
+.file-btn-main {
+    background-color: #03da8d;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 150px;
+    height: 40px;
+    border: none;
 }
 
 /* Hide part of fileInput element/component */
 .fileinput_2 {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.action-button-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
