@@ -56,39 +56,42 @@ server <- function(input, output) {
   # New model accuracy
   output$accuracy  <- renderText({
     obj = nn()
-    paste(round(obj@accuracy, digits = 2), "%")
+    paste(round(obj$accuracy, digits = 2), "%")
   })
+
+  ###########################################################################
+
+  # Predict #################################################################
+  # Insert the initial values with csv
+  output$valuesTable <- DT::renderDataTable({
+    inFile <- input$browseValues
+    
+    if (is.null(inFile))
+      return(NULL)
+    
+    dfValues <- read.csv(inFile$datapath,
+                   header = input$header,
+                   sep = ",")
+    
+    #Names of the attributes from csv
+    dfNames <- names(dfValues)
+    
+    #NA coluns receive 0
+    dfValues[is.na(dfValues)] = 0
+    
+    obj = nn()
+    predict = neuralnet::compute(obj$nn, dfValues);
+
+    return(DT::datatable(cbind(dfValues, Valor_predito=predict$net.result), options = list(scrollX = TRUE)))
+  })
+
 
   ###########################################################################
 
   # NEURAL NETWORK INFO
   output$table <- DT::renderDataTable({
     obj = nn()
-    return(DT::datatable(obj@table, options = list(scrollX = TRUE)))
-  })
-
-  # Insert the initial values with csv
-  output$attributes <- renderUI({
-    inFile <- input$browseValues
-    
-    if (is.null(inFile))
-      return(NULL)
-    
-    df <- read.csv(inFile$datapath,
-                   header = input$header,
-                   sep = ";")
-    
-    #Names of the attributes from csv
-    dfNames <- names(df)
-    
-    #NA coluns receive 0
-    df[is.na(df)] = 0
-    
-    #Return of population names
-    return(lapply(1:length(dfNames), function(i) {
-      div(dfNames[i])
-    }))
-    
+    return(DT::datatable(obj$table, options = list(scrollX = TRUE)))
   })
   
   # callModule(
