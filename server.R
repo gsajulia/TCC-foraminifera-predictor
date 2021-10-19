@@ -87,7 +87,12 @@ server <- function(input, output) {
     obj = nn()
     predict = neuralnet::compute(obj$nn, dfValues);
 
-    return(DT::datatable(cbind(dfValues, Valor_predito=predict$net.result), options = list(scrollX = TRUE)))
+    desnormalize <- function(normalizedValue, originalValue) {
+        z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+        return(z)
+    }
+
+    return(DT::datatable(cbind(dfValues, Valor_predito=desnormalize(predict$net.result, obj$cleanDf)), options = list(scrollX = TRUE)))
   })
 
 

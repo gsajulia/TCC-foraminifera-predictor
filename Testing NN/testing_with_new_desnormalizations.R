@@ -109,4 +109,5 @@ abline(0,1,lwd=2)
 # Predict function (separate file)
 teste = df[, -grep(outputExpected, colnames(df))]
 predict = neuralnet::compute(nn, teste);
-cbind(teste, Valor_predito=predict$net.result)
+#TODO -inf problem, sometimes occurs, problem with division by 0
+cbind(teste, Valor_predito=desnormalize(predict$net.result, df))

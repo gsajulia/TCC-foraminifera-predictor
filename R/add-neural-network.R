@@ -92,5 +92,5 @@ neuralNetwork <- function(outputExpected, df) {
     sprintf("Error: %f", nn$result.matrix[1,])
     sprintf("%1.2f%%", accuracy*100)
 
-    return(list(`accuracy`=accuracy*100, `table`=finalResult, `testAndPrediction`=results, `nn`= nn))
+    return(list(`accuracy`=accuracy*100, `table`=finalResult, `cleanDf`= df, `nn`= nn))
 }
