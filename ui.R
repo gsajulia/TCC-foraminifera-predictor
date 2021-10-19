@@ -87,9 +87,11 @@ ui <- dashboardPage(
                   tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
                   tags$div(
                     `class` = "special-title",
-                    "Nn:",
+                    "Dados de entrada",
+                    br(),
                     textOutput(outputId = "newFileName", container = span)
                   ),
+                  br(),
                   selectInput(
                     "category",
                     "Model Period",
@@ -109,7 +111,7 @@ ui <- dashboardPage(
                          "0-200m")
                   ),
                   tags$div( `class` = "action-button-container",
-                    "You Chose",
+                    "Your table Chose",
                     textOutput("depthOutput"),
                     br(),
                     actionButton("goButton", "PREDICT", class = "file-btn-main"))
