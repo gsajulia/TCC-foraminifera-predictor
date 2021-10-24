@@ -93,7 +93,7 @@ neuralNetwork <- function(outputExpected, df) {
     truePositives <- length(pred[pred == 1])
     sprintf("/n/nSão: %i de %i ", truePositives, length(pred))
     falsePositives <- length(pred)-truePositives
-    precision = predQuantity/(predQuantity + falsePositives)
+    precision = truePositives/(truePositives + falsePositives)
 
     #This if is to avoid the problem with division with 0 resulting in Inf
     deviation<- deviation[!abs(deviation) == Inf]
@@ -101,5 +101,5 @@ neuralNetwork <- function(outputExpected, df) {
     sprintf("Error: %f", nn$result.matrix[1,])
     sprintf("%1.2f%%", accuracy*100)
 
-    return(list(`accuracy`=accuracy*100, `precision`= precision*100, `table`=finalResult, `cleanDf`= df, `nn`= nn))
+    return(list(`accuracy`=accuracy*100, `precision`= precision*100, `table`=finalResult, `cleanDf`= df, `nn`= nn, `test`=test))
 }

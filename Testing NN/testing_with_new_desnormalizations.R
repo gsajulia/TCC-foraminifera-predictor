@@ -117,4 +117,4 @@ pred <- ifelse(accurate>0.9, 1, 0)
 truePositives <- length(pred[pred == 1])
 sprintf("/n/nSão: %i de %i ", truePositives, length(pred))
 falsePositives <- length(pred)-truePositives
-precision = predQuantity/(predQuantity + falsePositives)
+precision = truePositives/(truePositives + falsePositives)

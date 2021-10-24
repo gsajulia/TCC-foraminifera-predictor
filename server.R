@@ -1,4 +1,6 @@
 library(vroom)
+library(devtools)
+source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
 
 server <- function(input, output) {
 
@@ -106,12 +108,27 @@ server <- function(input, output) {
 
   ###########################################################################
 
-  # NEURAL NETWORK INFO
+  # NEURAL NETWORK INFO #####################################################
   output$table <- DT::renderDataTable({
     obj = nn()
     return(DT::datatable(obj$table, options = list(scrollX = TRUE)))
   })
   
+  # Graphs ##################################################################
+
+  output$plot1 <- renderPlot({
+    obj = nn()
+    predict = neuralnet::compute(obj$nn, obj$test);
+    # Result Plot
+    plot(obj$test[paste("RES", input$category, input$depth , sep = "_", collapse = NULL)][,1], predict$net.result[,1],col='red',main='Real vs predicted NN', xlab="Real", ylab="DNN")
+    abline(0,1,lwd=2)
+  })
+
+  output$plot2 <- renderPlot({
+    obj = nn()
+    plot.nnet(obj$nn)
+  }, height = 1000)
+
   # callModule(
   #   module = neural_network,
   #   id = "init_neural_network"

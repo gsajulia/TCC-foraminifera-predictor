@@ -28,9 +28,13 @@ ui <- dashboardPage(
         icon = icon("network-wired"),
         tabName = "neuralNetwork"
       ),
-      menuItem("Graphs", icon = icon("chart-bar"), tabName = "graphs"),
+      menuItem("Graphs",
+                icon = icon("chart-bar"),
+                tabName = "graphs"),
       hr(),
-      menuItem("Help", icon = icon("question"), tabName = "help")
+      menuItem("Help",
+                icon = icon("question"),
+                tabName = "help")
     )
   ),
   dashboardBody(
@@ -91,7 +95,6 @@ ui <- dashboardPage(
                     tags$div(`class` = "special-title", "Neural Network Model"),
                     tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
                     tags$div(
-                      `class` = "special-title",
                       "Entry data",
                       br(),
                       textOutput(outputId = "newFileName", container = span)
@@ -117,7 +120,7 @@ ui <- dashboardPage(
                     ),
                     tags$div(
                       `class` = "action-button-container",
-                      "Your table Chose",
+                      "Your table Choose",
                       textOutput("depthOutput"),
                       br(),
                       actionButton("goButton", "PREDICT", class = "file-btn-main")
@@ -186,10 +189,24 @@ ui <- dashboardPage(
         tabName = "neuralNetwork",
         box(
           width = 800,
-          title = "Inputs",
+          title = "Neural Network Information",
           solidHeader = TRUE,
           shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "table", width = "74vw"), type =
                                          2)
+        )
+      ),
+      tabItem(
+        tabName = "graphs",
+        box(
+          width = 800,
+          height = 1700,
+          title = "Graphs",
+          solidHeader = TRUE,
+          
+          plotOutput("plot1"),
+          br(),
+          br(),
+          plotOutput("plot2"),
         )
       )
     )
