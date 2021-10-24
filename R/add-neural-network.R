@@ -86,11 +86,20 @@ neuralNetwork <- function(outputExpected, df) {
     deviation=((actual-predicted)/actual)
     comparison=data.frame(predicted,actual,deviation)
     
+
+    # Calculating precision
+    accurate = 1-abs(data.matrix(deviation))
+    pred <- ifelse(accurate>0.9, 1, 0)
+    truePositives <- length(pred[pred == 1])
+    sprintf("/n/nSão: %i de %i ", truePositives, length(pred))
+    falsePositives <- length(pred)-truePositives
+    precision = predQuantity/(predQuantity + falsePositives)
+
     #This if is to avoid the problem with division with 0 resulting in Inf
     deviation<- deviation[!abs(deviation) == Inf]
     accuracy=1-abs(mean(data.matrix(deviation)))
     sprintf("Error: %f", nn$result.matrix[1,])
     sprintf("%1.2f%%", accuracy*100)
 
-    return(list(`accuracy`=accuracy*100, `table`=finalResult, `cleanDf`= df, `nn`= nn))
+    return(list(`accuracy`=accuracy*100, `precision`= precision*100, `table`=finalResult, `cleanDf`= df, `nn`= nn))
 }

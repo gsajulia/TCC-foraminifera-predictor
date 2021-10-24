@@ -64,6 +64,14 @@ server <- function(input, output) {
     paste(round(obj$accuracy, digits = 2), "%")
   })
 
+
+  # New model accuracy
+  output$precision  <- renderText({
+    obj = nn()
+    paste(round(obj$precision, digits = 2), "%")
+  })
+
+
   ###########################################################################
 
   # Predict #################################################################

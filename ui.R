@@ -141,7 +141,9 @@ ui <- dashboardPage(
                   textOutput(outputId = "accuracy", container = span)
                 ),
                 br(),
-                tags$div(`class` = "special-title", "Precision:")
+                tags$div(`class` = "special-title",
+                         "Precision:",
+                         textOutput(outputId = "precision", container = span))
               ),
             ),
             fluidRow(

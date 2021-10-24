@@ -109,5 +109,12 @@ abline(0,1,lwd=2)
 # Predict function (separate file)
 teste = df[, -grep(outputExpected, colnames(df))]
 predict = neuralnet::compute(nn, teste);
-#TODO -inf problem, sometimes occurs, problem with division by 0
 cbind(teste, Valor_predito=desnormalize(predict$net.result, df))
+
+# Calculating precision
+accurate = 1-abs(data.matrix(deviation))
+pred <- ifelse(accurate>0.9, 1, 0)
+truePositives <- length(pred[pred == 1])
+sprintf("/n/nSão: %i de %i ", truePositives, length(pred))
+falsePositives <- length(pred)-truePositives
+precision = predQuantity/(predQuantity + falsePositives)
