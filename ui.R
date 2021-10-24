@@ -56,66 +56,74 @@ ui <- dashboardPage(
             fluidRow(
               width = 12,
               column(
-                width = 4,
-                align = "center",
-                tags$div(
-                class = "box-container",
-                tags$div(`class` = "highlight-title", "New model?"),
-                tags$div(
-                  `class` = "medium-title",
-                  "If you want to create a new model insert a csv file to train a new neural network"
-                ),
-                
-                styledFileInput(
-                  "browseNNValues",
-                  "Browse",
-                  multiple = FALSE,
-                  btnStyle = "file-btn-light",
-                  labelIcon = "plus",
-                  progress = FALSE,
-                  accept = c("text/csv",
-                             "text/comma-separated-values,text/plain",
-                             ".csv")
-                ),
-              ),),
-              column(
-                width = 4,
-                style = "    display: flex;
-    justify-content: center;",
-                tags$div(
-                  tags$div(`class` = "special-title", "Neural Network Model"),
-                  tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
+                width = 8,
+                style = "display: flex;
+                        background-color: #f2fcf2;
+                        justify-content: space-around;
+                        padding: 25px;
+                        border-radius: 15px;",
+                column(
+                  width = 4,
                   tags$div(
-                    `class` = "special-title",
-                    "Dados de entrada",
+                    class = "box-container",
+                    tags$div(`class` = "highlight-title", "New model?"),
+                    tags$div(
+                      `class` = "medium-title",
+                      "If you want to create a new model insert a csv file to train a new neural network"
+                    ),
+                    
+                    styledFileInput(
+                      "browseNNValues",
+                      "Browse",
+                      multiple = FALSE,
+                      btnStyle = "file-btn-light",
+                      labelIcon = "plus",
+                      progress = FALSE,
+                      accept = c("text/csv",
+                                 "text/comma-separated-values,text/plain",
+                                 ".csv")
+                    ),
+                  ),
+                ),
+                column(
+                  width = 4,
+                  tags$div(
+                    tags$div(`class` = "special-title", "Neural Network Model"),
+                    tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
+                    tags$div(
+                      `class` = "special-title",
+                      "Entry data",
+                      br(),
+                      textOutput(outputId = "newFileName", container = span)
+                    ),
                     br(),
-                    textOutput(outputId = "newFileName", container = span)
-                  ),
-                  br(),
-                  selectInput(
-                    "category",
-                    "Model Period",
-                    list("Annual",
-                         "jan-mar",
-                         "jul-sep")
-                  ),
-                  selectInput(
-                    "depth",
-                    "Model Depth",
-                    list("0m",
-                         "50m",
-                         "75m",
-                         "100m",
-                         "0-75m",
-                         "0-100m",
-                         "0-200m")
-                  ),
-                  tags$div( `class` = "action-button-container",
-                    "Your table Chose",
-                    textOutput("depthOutput"),
-                    br(),
-                    actionButton("goButton", "PREDICT", class = "file-btn-main"))
-                )
+                    selectInput(
+                      "category",
+                      "Model Period",
+                      list("Annual",
+                           "jan-mar",
+                           "jul-sep")
+                    ),
+                    selectInput(
+                      "depth",
+                      "Model Depth",
+                      list("0m",
+                           "50m",
+                           "75m",
+                           "100m",
+                           "0-75m",
+                           "0-100m",
+                           "0-200m")
+                    ),
+                    tags$div(
+                      `class` = "action-button-container",
+                      "Your table Chose",
+                      textOutput("depthOutput"),
+                      br(),
+                      actionButton("goButton", "PREDICT", class = "file-btn-main")
+                    )
+                  )
+                ),
               ),
               column(
                 width = 4,
@@ -160,7 +168,10 @@ ui <- dashboardPage(
               ),
               checkboxInput("header", "Header", TRUE)
             ),
-            shinycssloaders::withSpinner(DT::dataTableOutput(outputId = "valuesTable", width = "74vw"), type=2)
+            shinycssloaders::withSpinner(
+              DT::dataTableOutput(outputId = "valuesTable", width = "74vw"),
+              type = 2
+            )
             #uiOutput(outputId = "attributes")
           ),
           
