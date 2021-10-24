@@ -35,7 +35,7 @@ server <- function(input, output) {
     )
 
     df <- read.csv(inFile$datapath,
-                header = input$header,
+                header = TRUE,
                 sep = ",")
 
     return (df)
@@ -75,7 +75,7 @@ server <- function(input, output) {
       return(NULL)
     
     dfValues <- read.csv(inFile$datapath,
-                   header = input$header,
+                   header = TRUE,
                    sep = ",")
     
     #Names of the attributes from csv

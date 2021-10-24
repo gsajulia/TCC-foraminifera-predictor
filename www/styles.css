@@ -166,6 +166,11 @@ div.box-body .shiny-input-container {
     border: none;
 }
 
+.file-btn-main:focus {
+    background-color: #2af0ab !important;
+    outline: none !important;
+}
+
 /* Hide part of fileInput element/component */
 .fileinput_2 {
     width: 0.1px;

@@ -166,7 +166,6 @@ ui <- dashboardPage(
                            "text/comma-separated-values,text/plain",
                            ".csv")
               ),
-              checkboxInput("header", "Header", TRUE)
             ),
             shinycssloaders::withSpinner(
               DT::dataTableOutput(outputId = "valuesTable", width = "74vw"),
