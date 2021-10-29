@@ -29,12 +29,12 @@ ui <- dashboardPage(
         tabName = "neuralNetwork"
       ),
       menuItem("Graphs",
-                icon = icon("chart-bar"),
-                tabName = "graphs"),
+               icon = icon("chart-bar"),
+               tabName = "graphs"),
       hr(),
       menuItem("Help",
-                icon = icon("question"),
-                tabName = "help")
+               icon = icon("question"),
+               tabName = "help")
     )
   ),
   dashboardBody(
@@ -95,9 +95,28 @@ ui <- dashboardPage(
                     tags$div(`class` = "special-title", "Neural Network Model"),
                     tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
                     tags$div(
+                      `class` = "checkbox-input-container",
                       "Entry data",
-                      br(),
-                      textOutput(outputId = "newFileName", container = span)
+                      #op2 TODO
+                      #   radioButtons(
+                      #   "rb",
+                      #   "Choose one:",
+                      #   choices = verbatimTextOutput("checkboxOption"),
+                      # ),
+                      #op1
+                      radioButtons(
+                        "rb",
+                        "Choose one:",
+                        choiceNames = list(
+                          tags$span("Default Models"),
+                          textOutput(outputId = "checkboxOption", container = span)
+                        ),
+                        choiceValues = list("default", "new")
+                      ),
+                      # uiOutput(outputId = "selectB"),
+                      # uiOutput('checkboxOptions'),
+                      conditionalPanel(condition = "!input.browseNNValues && input.rb=='new'",
+                                       span(textOutput("inputWarning"), style = "color:red")),
                     ),
                     br(),
                     selectInput(
@@ -144,9 +163,11 @@ ui <- dashboardPage(
                   textOutput(outputId = "accuracy", container = span)
                 ),
                 br(),
-                tags$div(`class` = "special-title",
-                         "Precision:",
-                         textOutput(outputId = "precision", container = span))
+                tags$div(
+                  `class` = "special-title",
+                  "Precision:",
+                  textOutput(outputId = "precision", container = span)
+                )
               ),
             ),
             fluidRow(

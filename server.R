@@ -7,15 +7,36 @@ server <- function(input, output) {
   # PREDICT
 
   # Checkbox decide between new model or default model
-  output$newFileName <- renderText({ 
+   #op2 TODO
+  # output$checkboxOption <- renderPrint({
+  #   if(input$browseNNValues$name)
+  #     return(list("Default Models", input$browseNNValues$name))
+  #   else
+  #     return(list("Default Models"))
+  # })
+
+#   output$selectB <- renderUI({
+#   if(req(input$browseNNValues$name)) ?
+#     options <- c("Default Models", input$browseNNValues$name) 
+#   else 
+#     options <- c("Default Models") 
+
+#   return(
+#   radioButtons('selectB', 'Select Letter', 
+#                 choices = options,
+#                 inline = TRUE))
+# })
+
+  #op1
+  output$checkboxOption <- renderText({ 
     paste(input$browseNNValues$name)
   })
 
-  # Input the category of the desire NN
-  output$result <- renderText({
-    paste("You chose", input$category)
+  output$inputWarning <- renderText({
+    paste("ERROR:  You should Browse a new model")
   })
 
+  # Input the category of the desire NN
   output$depthOutput <- renderText({
     paste("RES", input$category, input$depth , sep = "_", collapse = NULL)
   })
