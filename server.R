@@ -32,8 +32,15 @@ server <- function(input, output) {
     paste(input$browseNNValues$name)
   })
 
-  output$inputWarning <- renderText({
-    paste("ERROR:  You should Browse a new model")
+  observe({
+    if(is.null(input$browseNNValues) && input$rb=="new")
+      output$inputWarning <- renderText({
+        paste("ERROR:  You should Browse a new model")
+      })
+    else
+      output$inputWarning <- renderText({
+        paste("")
+      })
   })
 
   # Input the category of the desire NN

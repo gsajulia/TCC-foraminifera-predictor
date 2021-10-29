@@ -115,8 +115,9 @@ ui <- dashboardPage(
                       ),
                       # uiOutput(outputId = "selectB"),
                       # uiOutput('checkboxOptions'),
-                      conditionalPanel(condition = "!input.browseNNValues && input.rb=='new'",
-                                       span(textOutput("inputWarning"), style = "color:red")),
+                      span(textOutput("inputWarning"), style = "color:red")
+                      # conditionalPanel(condition = "output.fileUploaded && input.rb==='new'",
+                      #                  span(textOutput("inputWarning"), style = "color:red")),
                     ),
                     br(),
                     selectInput(
