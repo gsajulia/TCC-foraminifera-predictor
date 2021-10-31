@@ -95,9 +95,16 @@ server <- function(input, output) {
   nn <<- eventReactive(input$goButton, {
       showModal(modalDialog("Doing a function", footer=NULL))
 
-      obj = neuralNetwork(
-      paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
-      
+      if(input$rb=="new" && is.null(input$browseNNValues)) {
+        removeModal()
+        return (NULL)
+      }
+      else if(input$rb=="new")
+        obj = neuralNetwork(
+        paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
+      else
+        obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+
       removeModal()
 
       return (obj)
