@@ -33,6 +33,7 @@ server <- function(input, output) {
   })
 
   observe({
+    # WARNING IN CREATE NEW MODEL
     if(is.null(input$browseNNValues) && input$rb=="new")
       output$inputWarning <- renderText({
         paste("ERROR:  You should Browse a new model")
@@ -40,6 +41,20 @@ server <- function(input, output) {
     else
       output$inputWarning <- renderText({
         paste("")
+      })
+
+    # ACTION BUTTON
+    if(is.null(input$browseNNValues) && input$rb=="new")
+      output$predictButtonText <- renderText({
+        paste("CREATE & PREDICT")
+      })
+    else if(input$rb=="new")
+      output$predictButtonText <- renderText({
+        paste("CREATE & PREDICT")
+      })
+    else
+      output$predictButtonText <- renderText({
+        paste("PREDICT")
       })
   })
 

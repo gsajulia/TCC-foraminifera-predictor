@@ -143,7 +143,7 @@ ui <- dashboardPage(
                       "Your table Choose",
                       textOutput("depthOutput"),
                       br(),
-                      actionButton("goButton", "PREDICT", class = "file-btn-main")
+                      actionButton("goButton", textOutput("predictButtonText"), class = "file-btn-main")
                     )
                   )
                 ),
