@@ -56,9 +56,6 @@ neuralNetwork <- function(outputExpected, df) {
     );
 
     nn$result.matrix
-    # plot neural network
-    plot(nn)
-
 
     # NN Result
     predict = neuralnet::compute(nn, test);

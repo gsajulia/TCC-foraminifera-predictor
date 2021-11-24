@@ -86,6 +86,16 @@ hr {
     margin-bottom: 2vw;
 }
 
+.test-title {
+    margin-bottom: 20px;
+}
+
+.medium-title-custom-border {
+    font-size: 16px;
+    padding-right: 10px;
+    width: 100px;
+}
+
 .highlight-title {
     font-size: 19px;
     font-weight: bold;

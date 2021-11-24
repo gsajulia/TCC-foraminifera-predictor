@@ -88,12 +88,29 @@ ui <- dashboardPage(
                                  ".csv")
                     ),
                   ),
+                  br(),
+                  div(
+                    `class` = "special-title medium-title test-title",
+                    "Data to test",
+                  ),
+                  div(
+                    `class` = "test-title",
+                    span(`class` = "medium-title-custom-border",
+                    "Create model"),
+                    downloadButton("downloadDataModel", "Download")
+                  ),
+                  div(
+                    span(`class` = "medium-title-custom-border",
+                         style = 'padding-right:50px;',
+                         "Predict"),
+                    downloadButton("downloadDataPredict", "Download")
+                  ),
                 ),
                 column(
                   width = 4,
                   tags$div(
                     tags$div(`class` = "special-title", "Neural Network Model"),
-                    tags$div(`class` = "medium-title", "Choose the parameter to generete the network"),
+                    tags$div(`class` = "medium-title", "Choose the parameter to generaRte the network"),
                     tags$div(
                       `class` = "checkbox-input-container",
                       "Entry data",
@@ -184,7 +201,7 @@ ui <- dashboardPage(
               tags$style(".progress-bar{background-color:#3c763d;}"),
               styledFileInput(
                 "browseValues",
-                "Browse",
+                "Browse and Predict",
                 placeholder = "No file selected",
                 multiple = FALSE,
                 labelIcon = "plus",

@@ -26,7 +26,26 @@ server <- function(input, output) {
 #                 choices = options,
 #                 inline = TRUE))
 # })
-
+  
+  # Downloadable csv of selected dataset ----
+  output$downloadDataModel <- downloadHandler(
+    filename = function() {
+      paste("last_forams_data_clean", ".csv", sep = "")
+    },
+    content = function(file) {
+      file.copy("last_forams_data_clean_last.csv", file)
+    }
+  )
+  
+  output$downloadDataPredict <- downloadHandler(
+    filename = function() {
+      paste("forams_values", ".csv", sep = "")
+    },
+    content = function(file) {
+      file.copy("forams_values.csv", file)
+    }
+  )
+  
   #op1
   output$checkboxOption <- renderText({ 
     paste(input$browseNNValues$name)
@@ -46,15 +65,15 @@ server <- function(input, output) {
     # ACTION BUTTON
     if(is.null(input$browseNNValues) && input$rb=="new")
       output$predictButtonText <- renderText({
-        paste("CREATE & PREDICT")
+        paste("CREATE & LOAD MODEL")
       })
     else if(input$rb=="new")
       output$predictButtonText <- renderText({
-        paste("CREATE & PREDICT")
+        paste("CREATE & LOAD MODEL")
       })
     else
       output$predictButtonText <- renderText({
-        paste("PREDICT")
+        paste("LOAD MODEL")
       })
   })
 
@@ -93,7 +112,7 @@ server <- function(input, output) {
   # })
 
   nn <<- eventReactive(input$goButton, {
-      showModal(modalDialog("Doing a function", footer=NULL))
+      showModal(modalDialog("Doing a function...", footer=NULL))
 
       if(input$rb=="new" && is.null(input$browseNNValues)) {
         removeModal()
