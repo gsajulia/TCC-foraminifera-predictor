@@ -1,19 +1,83 @@
 library(vroom)
+library(devtools)
+source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
+load("./data.RData")
 
 server <- function(input, output) {
-
   # PREDICT
 
   # Checkbox decide between new model or default model
-  output$newFileName <- renderText({ 
+   #op2 TODO
+  # output$checkboxOption <- renderPrint({
+  #   if(input$browseNNValues$name)
+  #     return(list("Default Models", input$browseNNValues$name))
+  #   else
+  #     return(list("Default Models"))
+  # })
+
+#   output$selectB <- renderUI({
+#   if(req(input$browseNNValues$name)) ?
+#     options <- c("Default Models", input$browseNNValues$name) 
+#   else 
+#     options <- c("Default Models") 
+
+#   return(
+#   radioButtons('selectB', 'Select Letter', 
+#                 choices = options,
+#                 inline = TRUE))
+# })
+  
+  # Downloadable csv of selected dataset ----
+  output$downloadDataModel <- downloadHandler(
+    filename = function() {
+      paste("last_forams_data_clean", ".csv", sep = "")
+    },
+    content = function(file) {
+      file.copy("last_forams_data_clean_last.csv", file)
+    }
+  )
+  
+  output$downloadDataPredict <- downloadHandler(
+    filename = function() {
+      paste("forams_values", ".csv", sep = "")
+    },
+    content = function(file) {
+      file.copy("forams_values.csv", file)
+    }
+  )
+  
+  #op1
+  output$checkboxOption <- renderText({ 
     paste(input$browseNNValues$name)
   })
 
-  # Input the category of the desire NN
-  output$result <- renderText({
-    paste("You chose", input$category)
+  observe({
+    # WARNING IN CREATE NEW MODEL
+    if(is.null(input$browseNNValues) && input$rb=="new")
+      output$inputWarning <- renderText({
+        paste("ERROR:  You should Browse a new model")
+      })
+    else
+      output$inputWarning <- renderText({
+        paste("")
+      })
+
+    # ACTION BUTTON
+    if(is.null(input$browseNNValues) && input$rb=="new")
+      output$predictButtonText <- renderText({
+        paste("CREATE & LOAD MODEL")
+      })
+    else if(input$rb=="new")
+      output$predictButtonText <- renderText({
+        paste("CREATE & LOAD MODEL")
+      })
+    else
+      output$predictButtonText <- renderText({
+        paste("LOAD MODEL")
+      })
   })
 
+  # Input the category of the desire NN
   output$depthOutput <- renderText({
     paste("RES", input$category, input$depth , sep = "_", collapse = NULL)
   })
@@ -35,7 +99,7 @@ server <- function(input, output) {
     )
 
     df <- read.csv(inFile$datapath,
-                header = input$header,
+                header = TRUE,
                 sep = ",")
 
     return (df)
@@ -48,11 +112,18 @@ server <- function(input, output) {
   # })
 
   nn <<- eventReactive(input$goButton, {
-      showModal(modalDialog("Doing a function", footer=NULL))
+      showModal(modalDialog("Doing a function...", footer=NULL))
 
-      obj = neuralNetwork(
-      paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
-      
+      if(input$rb=="new" && is.null(input$browseNNValues)) {
+        removeModal()
+        return (NULL)
+      }
+      else if(input$rb=="new")
+        obj = neuralNetwork(
+        paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
+      else
+        obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+
       removeModal()
 
       return (obj)
@@ -63,6 +134,14 @@ server <- function(input, output) {
     obj = nn()
     paste(round(obj$accuracy, digits = 2), "%")
   })
+
+
+  # New model accuracy
+  output$precision  <- renderText({
+    obj = nn()
+    paste(round(obj$precision, digits = 2), "%")
+  })
+
 
   ###########################################################################
 
@@ -75,7 +154,7 @@ server <- function(input, output) {
       return(NULL)
     
     dfValues <- read.csv(inFile$datapath,
-                   header = input$header,
+                   header = TRUE,
                    sep = ",")
     
     #Names of the attributes from csv
@@ -87,18 +166,38 @@ server <- function(input, output) {
     obj = nn()
     predict = neuralnet::compute(obj$nn, dfValues);
 
-    return(DT::datatable(cbind(dfValues, Valor_predito=predict$net.result), options = list(scrollX = TRUE)))
+    desnormalize <- function(normalizedValue, originalValue) {
+        z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+        return(z)
+    }
+
+    return(DT::datatable(cbind(dfValues, Valor_predito=desnormalize(predict$net.result, obj$cleanDf)), options = list(scrollX = TRUE)))
   })
 
 
   ###########################################################################
 
-  # NEURAL NETWORK INFO
+  # NEURAL NETWORK INFO #####################################################
   output$table <- DT::renderDataTable({
     obj = nn()
     return(DT::datatable(obj$table, options = list(scrollX = TRUE)))
   })
   
+  # Graphs ##################################################################
+
+  output$plot1 <- renderPlot({
+    obj = nn()
+    predict = neuralnet::compute(obj$nn, obj$test);
+    # Result Plot
+    plot(obj$test[paste("RES", input$category, input$depth , sep = "_", collapse = NULL)][,1], predict$net.result[,1],col='red',main='Real vs predicted NN', xlab="Real", ylab="DNN")
+    abline(0,1,lwd=2)
+  })
+
+  output$plot2 <- renderPlot({
+    obj = nn()
+    plot.nnet(obj$nn)
+  }, height = 1000)
+
   # callModule(
   #   module = neural_network,
   #   id = "init_neural_network"

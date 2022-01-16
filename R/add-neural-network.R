@@ -28,8 +28,13 @@ neuralNetwork <- function(outputExpected, df) {
     return(z)
     }
 
+    desnormalize <- function(normalizedValue, originalValue) {
+        z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+        return(z)
+    }
+
     # Normalization of dataset, dimension values between 0 and 1
-    dataset <- as.data.frame(lapply(df, normalize))
+    dataset <- as.data.frame(normalize(df))
 
     # Creating formula that pick the names of the columns
     # And concat each one with "+"
@@ -41,8 +46,7 @@ neuralNetwork <- function(outputExpected, df) {
     train <- dataset[index,];
     test <- dataset[-index,];
 
-    desnormTest <- data.frame(min(df[, outputExpected]) + test[, outputExpected] * (max(df[, outputExpected]) - min(df[, outputExpected])))
-    desnormTest <- data.frame(min(df) + test * (max(df) - min(df)))  
+    desnormTest <- data.frame(desnormalize(test, df))  
 
     # Neural Network equation
     nn = neuralnet(str_c(outputExpected, " ~ ", formula), data=train,
@@ -52,15 +56,12 @@ neuralNetwork <- function(outputExpected, df) {
     );
 
     nn$result.matrix
-    # plot neural network
-    plot(nn)
-
 
     # NN Result
     predict = neuralnet::compute(nn, test);
 
     # Denormalizing values from result
-    desnormResult <- data.frame(min(df[, outputExpected]) + predict$net.result * (max(df[, outputExpected]) - min(df[, outputExpected])))
+    desnormResult <- data.frame(desnormalize(predict$net.result, df))
 
     colnames(desnormResult) <- c("Denormalized prediction")
 
@@ -82,11 +83,20 @@ neuralNetwork <- function(outputExpected, df) {
     deviation=((actual-predicted)/actual)
     comparison=data.frame(predicted,actual,deviation)
     
+
+    # Calculating precision
+    accurate = 1-abs(data.matrix(deviation))
+    pred <- ifelse(accurate>0.9, 1, 0)
+    truePositives <- length(pred[pred == 1])
+    sprintf("/n/nSão: %i de %i ", truePositives, length(pred))
+    falsePositives <- length(pred)-truePositives
+    precision = truePositives/(truePositives + falsePositives)
+
     #This if is to avoid the problem with division with 0 resulting in Inf
     deviation<- deviation[!abs(deviation) == Inf]
     accuracy=1-abs(mean(data.matrix(deviation)))
     sprintf("Error: %f", nn$result.matrix[1,])
     sprintf("%1.2f%%", accuracy*100)
 
-    return(list(`accuracy`=accuracy*100, `table`=finalResult, `testAndPrediction`=results, `nn`= nn))
-}          
+    return(list(`accuracy`=accuracy*100, `precision`= precision*100, `table`=finalResult, `cleanDf`= df, `nn`= nn, `test`=test))
+}
