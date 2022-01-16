@@ -25,13 +25,16 @@ ui <- dashboardPage(
       ),
       menuItem(
         "Neural Network Info",
-        icon = icon("network-wired"),
+        icon = icon("brain"),
         tabName = "neuralNetwork"
       ),
       menuItem("Graphs",
                icon = icon("chart-bar"),
                tabName = "graphs"),
       hr(),
+      menuItem("Anova Tree",
+               icon = icon("network-wired"),
+               tabName = "anova"),
       menuItem("Help",
                icon = icon("question"),
                tabName = "help")
@@ -110,7 +113,7 @@ ui <- dashboardPage(
                   width = 4,
                   tags$div(
                     tags$div(`class` = "special-title", "Neural Network Model"),
-                    tags$div(`class` = "medium-title", "Choose the parameter to generaRte the network"),
+                    tags$div(`class` = "medium-title", "Choose the parameter to generate the network"),
                     tags$div(
                       `class` = "checkbox-input-container",
                       "Entry data",
@@ -246,6 +249,17 @@ ui <- dashboardPage(
           br(),
           br(),
           plotOutput("plot2"),
+        )
+      ),
+      tabItem(
+        tabName = "anova",
+        box(
+          width = 800,
+          height = 1700,
+          title = "Anova Tree",
+          solidHeader = TRUE,
+          
+          plotOutput("plotTree"),
         )
       )
     )

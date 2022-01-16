@@ -1,6 +1,7 @@
 /* Note: The styles of packages components can be founded by inspecting element,
 doing this allow you change to the attribute that you wants*/
 
+/* icons can be found in fonts awesome */
 /* Header */
 .skin-blue .main-header .logo:hover {
     background-color: #212936;

@@ -1,5 +1,6 @@
 library(vroom)
 library(devtools)
+library("rpart.plot")
 source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
 load("./data.RData")
 
@@ -198,6 +199,25 @@ server <- function(input, output) {
     plot.nnet(obj$nn)
   }, height = 1000)
 
+
+  # Anova tree ################################################################
+    anovaTree <<- eventReactive(input$goButton, {
+      if(input$rb=="new")
+        obj = neuralNetwork(
+        paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
+      else
+        obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+
+      return (obj)
+  })
+
+  output$plotTree <- renderPlot({
+    obj = anovaTree()
+
+    # Result Plot
+    rpart.plot(foramTree, type = 3, digits = 2)
+  })
+  #############################################################################
   # callModule(
   #   module = neural_network,
   #   id = "init_neural_network"
