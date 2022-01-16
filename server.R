@@ -47,7 +47,7 @@ server <- function(input, output) {
   #     paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
   # })
 
-  nn <- eventReactive(input$goButton, {
+  nn <<- eventReactive(input$goButton, {
       showModal(modalDialog("Doing a function", footer=NULL))
 
       obj = neuralNetwork(
