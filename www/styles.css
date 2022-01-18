@@ -194,9 +194,8 @@ div.box-body .shiny-input-container {
 
 .action-button-container {
     display: flex;
-    justify-content: center;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
 }
 
 .checkbox-input-container input {

@@ -1,5 +1,6 @@
 library(vroom)
 library(devtools)
+library("rpart")
 library("rpart.plot")
 source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
 load("./data.RData")
@@ -129,20 +130,25 @@ server <- function(input, output) {
 
       return (obj)
   })
-  
-  # New model accuracy
-  output$accuracy  <- renderText({
-    obj = nn()
-    paste(round(obj$accuracy, digits = 2), "%")
-  })
-
-
-  # New model accuracy
-  output$precision  <- renderText({
-    obj = nn()
-    paste(round(obj$precision, digits = 2), "%")
-  })
-
+    
+    output$metrics <- renderUI({
+          obj = nn()
+          
+          return (div(
+              div(`class` = "special-title","Accuracy:", obj$accuracy, "%"),
+              br(),
+              div(`class` = "special-title","Precision:", obj$precision, "%"),
+              br(),
+              div(`class` = "special-title","Mean Squared Error:", obj$mse),
+              br(),
+              div(`class` = "special-title","Mean Absolute Error:", obj$mae),
+              br(),
+              div(`class` = "special-title","Root Mean Squared Error:", obj$rmse),
+              br(),
+              div(`class` = "special-title","Relative Absolute Error:", obj$rae),
+              br(),
+          ))
+    })
 
   ###########################################################################
 
@@ -201,21 +207,24 @@ server <- function(input, output) {
 
 
   # Anova tree ################################################################
-    anovaTree <<- eventReactive(input$goButton, {
-      if(input$rb=="new")
-        obj = neuralNetwork(
+    treeFunction <<- eventReactive(input$goButton, {
+      if(input$rb=="new") {
+        obj = anovaTree(
         paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
-      else
+      }
+      else {
         obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+        obj = obj$foramTree
+      }
 
       return (obj)
   })
 
   output$plotTree <- renderPlot({
-    obj = anovaTree()
+    tree = treeFunction()
 
     # Result Plot
-    rpart.plot(foramTree, type = 3, digits = 2)
+    rpart.plot(tree, type = 3, digits = 2)
   })
   #############################################################################
   # callModule(
