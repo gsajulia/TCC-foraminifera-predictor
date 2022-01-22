@@ -134,19 +134,56 @@ server <- function(input, output) {
     output$metrics <- renderUI({
           obj = nn()
           
-          return (div(
-              div(`class` = "special-title","Accuracy:", obj$accuracy, "%"),
+          return (column(
+              width=12,
+              column(
+                width= 6,
+                div(
+                  div(
+                  `class` = "special-title info-box",
+                  div("MEAN SQUARED ERROR:", 
+                  span(style = "font-weight: bold",obj$mse)),
+                  br(),
+                  div(`class` = "small-title",
+                  "MSE is perhaps the most popular metric used for regression problems. Using this formula we find the mean square error between the predicted and actual values.")
+                  )
+                ),
+                br(),
+                div(
+                  div(
+                  `class` = "special-title info-box",
+                  div("MEAN ABSOLUTE ERROR:", 
+                  span(style = "font-weight: bold",obj$mae)),
+                  br(),
+                  div(`class` = "small-title",
+                  "MAE is a metric that finds the mean absolute distance between predicted and desired values.")
+                  )
+                ),
+              ),
+              column(
+                width= 6,
+              div(
+                div(
+                `class` = "special-title info-box",
+                div("ROOT MEAN SQUARED ERROR:", 
+                span(style = "font-weight: bold",obj$rmse)),
+                br(),
+                div(`class` = "small-title",
+                "It is similar to MSE, but the square root returns the scale of the squared errors.")
+                )
+              ),
               br(),
-              div(`class` = "special-title","Precision:", obj$precision, "%"),
-              br(),
-              div(`class` = "special-title","Mean Squared Error:", obj$mse),
-              br(),
-              div(`class` = "special-title","Mean Absolute Error:", obj$mae),
-              br(),
-              div(`class` = "special-title","Root Mean Squared Error:", obj$rmse),
-              br(),
-              div(`class` = "special-title","Relative Absolute Error:", obj$rae),
-              br(),
+              div(
+                div(
+                `class` = "special-title info-box",
+                div("RELATIVE ABSOLUTE ERROR:", 
+                span(style = "font-weight: bold",obj$rae)),
+                br(),
+                div(`class` = "small-title",
+                "It is the MAE relativized by dividing the MAE using the average of Yj as the value subtracted from the sum.")
+                )
+              )
+              )
           ))
     })
 

@@ -86,6 +86,11 @@ hr {
     font-size: 16px;
     margin-bottom: 2vw;
 }
+.small-title {
+    font-size: 15px !important;
+    text-align: left !important;
+    letter-spacing: normal !important;
+}
 
 .test-title {
     margin-bottom: 20px;
@@ -101,6 +106,7 @@ hr {
     font-size: 19px;
     font-weight: bold;
     padding-bottom: 14px;
+    text-align: left;
 }
 
 /* Buttons */
@@ -251,4 +257,11 @@ div.box-body .shiny-input-container {
 
 .error {
     color:red;
+}
+
+.info-box {
+    border: 1px #ccc solid;
+    padding: 20px;
+    background: #f2fcf2;
+    min-height: 155px;
 }
