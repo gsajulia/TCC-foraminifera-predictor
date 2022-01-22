@@ -168,8 +168,11 @@ ui <- dashboardPage(
                     "Your table Choose",
                     textOutput("depthOutput"),
                     br(),
-                    actionButton("goButton", textOutput("predictButtonText"), class = "file-btn-main")
-                  )
+                    uiOutput(outputId="infoLoaded"),
+                    br(),
+                    actionButton("goButton", textOutput("predictButtonText"), class = "file-btn-main"),
+                  ),
+
                 )
               ),
             ),

@@ -244,3 +244,11 @@ div.box-body .shiny-input-container {
 .checkbox-input-container label input:checked+span:after {
     opacity: 1;
 }
+
+.loaded {
+    color:lightseagreen;
+}
+
+.error {
+    color:red;
+}

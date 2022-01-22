@@ -114,7 +114,7 @@ server <- function(input, output) {
   # })
 
   nn <<- eventReactive(input$goButton, {
-      showModal(modalDialog("Doing a function...", footer=NULL))
+      showModal(modalDialog("Loading...", footer=NULL))
 
       if(input$rb=="new" && is.null(input$browseNNValues)) {
         removeModal()
@@ -148,6 +148,20 @@ server <- function(input, output) {
               div(`class` = "special-title","Relative Absolute Error:", obj$rae),
               br(),
           ))
+    })
+
+        output$infoLoaded <- renderUI({
+          obj = nn()
+          loaded = !!obj$mse
+          if(loaded) {
+            return (div(
+                div(`class` = "loaded","Model loaded!"),
+            ))
+          } else {
+              return (div(
+                div(`class` = "error","Error, try to add the model again"),
+            ))
+          }
     })
 
   ###########################################################################
