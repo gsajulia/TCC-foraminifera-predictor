@@ -202,16 +202,38 @@ server <- function(input, output) {
     })
 
   ###########################################################################
-
+        
   # Predict #################################################################
   # Insert the initial values with csv
+    output$downloadData <- downloadHandler(
+      filename = function(){"resultForam.csv"}, 
+      content = function(fname){
+        obj = nn()
+        predict = neuralnet::compute(obj$nn, dfValues);
+        
+        desnormalize <- function(normalizedValue, originalValue) {
+          z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+          return(z)
+        }
+        write.csv(data.frame(cbind(dfValues, Valor_predito=desnormalize(predict$net.result, obj$cleanDf))), fname)
+      }
+    )
+
+    output$downloadPredicted <- renderUI({
+      inFile <- input$browseValues
+
+      if (is.null(inFile))
+         NULL
+      else div(style="padding-bottom: 20px", downloadButton("downloadData", "Download"))
+    })
+        
   output$valuesTable <- DT::renderDataTable({
     inFile <- input$browseValues
     
     if (is.null(inFile))
       return(NULL)
     
-    dfValues <- read.csv(inFile$datapath,
+    dfValues <<- read.csv(inFile$datapath,
                    header = TRUE,
                    sep = ",")
     
@@ -231,7 +253,7 @@ server <- function(input, output) {
 
     return(DT::datatable(cbind(dfValues, Valor_predito=desnormalize(predict$net.result, obj$cleanDf)), options = list(scrollX = TRUE)))
   })
-
+        
 
   ###########################################################################
 

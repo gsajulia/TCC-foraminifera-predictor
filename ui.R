@@ -199,11 +199,11 @@ ui <- dashboardPage(
                            ".csv")
               ),
             ),
+            uiOutput(outputId = "downloadPredicted"),
             shinycssloaders::withSpinner(
               DT::dataTableOutput(outputId = "valuesTable", width = "74vw"),
               type = 2
             )
-            #uiOutput(outputId = "attributes")
           ),
           
           title = "Predict",
