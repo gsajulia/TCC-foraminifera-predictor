@@ -259,13 +259,23 @@ ui <- dashboardPage(
             div(`class` = "small-title",
                 "See more info about the Neural Network metrics below, this is a Regression problem so the metrics will be different types of errors, the smaller the error, the better the model."),
             br(),
-            div(`class` = "small-title", "More info is available in: ", a("Regression Errors", href="https://machinelearningmastery.com/regression-metrics-for-machine-learning/#:~:text=There%20are%20three%20error%20metrics,Mean%20Absolute%20Error%20(MAE)", target="_blank")),
+            div(`class` = "small-title", "More info is available in: ", 
+                a("Regression Errors", href="https://machinelearningmastery.com/regression-metrics-for-machine-learning/#:~:text=There%20are%20three%20error%20metrics,Mean%20Absolute%20Error%20(MAE)", target="_blank"), " & ",
+                a("Anova Tree", href="https://www.youtube.com/watch?v=r1ueoHA_KCQ&t=68s", target="_blank")),
             width = 12,
             align = "right",
             br(),
             tags$div(`class` = "highlight-title", "Model Info"),
-            uiOutput(outputId="metrics")
-          ),
+            uiOutput(outputId="metrics"),
+            br(),
+            column(
+              width=12,
+            div(
+              style="margin-top: 20px;",
+              `class` = "info-box-tree",
+            div(style="text-align: left; padding-bottom: 20px;", `class` = "highlight-title", "Anova Tree"),
+            div(`class` = "small-title", "Analysis of variance (ANOVA) is a statistical test for detecting differences in the group mean when there is one parametric dependent variable & one or more independent variable.")))
+            ),
         )
       )
     )

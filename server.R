@@ -180,7 +180,7 @@ server <- function(input, output) {
                 span(style = "font-weight: bold",obj$rae)),
                 br(),
                 div(`class` = "small-title",
-                "It is the MAE relativized by dividing the MAE using the average of Yj as the value subtracted from the sum.")
+                "It is the MAE relativized by dividing the MAE using the average as the value subtracted from the sum.")
                 )
               )
               )
