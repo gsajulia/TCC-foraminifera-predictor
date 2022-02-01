@@ -299,6 +299,22 @@ server <- function(input, output) {
     # Result Plot
     rpart.plot(tree, type = 3, digits = 2)
   })
+
+    output$foramTreee <- DT::renderDataTable({
+        #obj = nn()
+            #Names of the attributes from csv
+        inFile <- input$browseNNValues
+        
+        tree = treeFunction()
+        result <- predict(tree, dfValues)
+        
+        desnormalize <- function(normalizedValue, originalValue) {
+          z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+          return(z)
+        }
+
+        return(DT::datatable(cbind(dfValues, Valor_predito=result), options = list(scrollX = TRUE)))
+      })
   #############################################################################
   # callModule(
   #   module = neural_network,

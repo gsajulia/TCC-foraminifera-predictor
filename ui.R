@@ -244,8 +244,9 @@ ui <- dashboardPage(
           height = 1700,
           title = "Anova Tree",
           solidHeader = TRUE,
-          
           plotOutput("plotTree"),
+          div(`class` = "highlight-title", "Predicted by Anova Tree"),
+          DT::dataTableOutput(outputId = "foramTreee", width = "74vw")
         )
       ),
       tabItem(
