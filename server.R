@@ -281,13 +281,25 @@ server <- function(input, output) {
 
   # Anova tree ################################################################
     treeFunction <<- eventReactive(input$goButton, {
+      tempdf <- read.csv("last_forams_data_clean_last.csv",
+               header = TRUE,
+               sep = ",")
+
+      outputExpected = gsub("-", ".", paste("RES", input$category, input$depth , sep = "_", collapse = NULL), fixed = TRUE)
+      # Keep only the RES column of outputExpected
+      outputResult = tempdf[, outputExpected]
+      tempdf <- tempdf[, -grep("RES", colnames(tempdf))]
+      tempdf[outputExpected] <- outputResult
+
       if(input$rb=="new") {
         obj = anovaTree(
         paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
       }
-      else {
-        obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
-        obj = obj$foramTree
+      else if(input$rb=="default"){
+        #obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+        #obj = obj$foramTree
+        obj = anovaTree(
+        paste("RES", input$category, input$depth , sep = "_", collapse = NULL), tempdf)
       }
 
       return (obj)
@@ -304,7 +316,7 @@ server <- function(input, output) {
         #obj = nn()
             #Names of the attributes from csv
         inFile <- input$browseNNValues
-        
+
         tree = treeFunction()
         result <- predict(tree, dfValues)
         
