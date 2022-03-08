@@ -1,5 +1,6 @@
 library(vroom)
 library(devtools)
+library("rpart")
 library("rpart.plot")
 source_url('https://gist.githubusercontent.com/fawda123/7471137/raw/466c1474d0a505ff044412703516c34f1a4684a5/nnet_plot_update.r')
 load("./data.RData")
@@ -113,7 +114,7 @@ server <- function(input, output) {
   # })
 
   nn <<- eventReactive(input$goButton, {
-      showModal(modalDialog("Doing a function...", footer=NULL))
+      showModal(modalDialog("Loading...", footer=NULL))
 
       if(input$rb=="new" && is.null(input$browseNNValues)) {
         removeModal()
@@ -129,32 +130,110 @@ server <- function(input, output) {
 
       return (obj)
   })
-  
-  # New model accuracy
-  output$accuracy  <- renderText({
-    obj = nn()
-    paste(round(obj$accuracy, digits = 2), "%")
-  })
+    
+    output$metrics <- renderUI({
+          obj = nn()
+          
+          return (column(
+              width=12,
+              column(
+                width= 6,
+                div(
+                  div(
+                  `class` = "special-title info-box",
+                  div("MEAN SQUARED ERROR:", 
+                  span(style = "font-weight: bold",obj$mse)),
+                  br(),
+                  div(`class` = "small-title",
+                  "MSE is perhaps the most popular metric used for regression problems. Using this formula we find the mean square error between the predicted and actual values.")
+                  )
+                ),
+                br(),
+                div(
+                  div(
+                  `class` = "special-title info-box",
+                  div("MEAN ABSOLUTE ERROR:", 
+                  span(style = "font-weight: bold",obj$mae)),
+                  br(),
+                  div(`class` = "small-title",
+                  "MAE is a metric that finds the mean absolute distance between predicted and desired values.")
+                  )
+                ),
+              ),
+              column(
+                width= 6,
+              div(
+                div(
+                `class` = "special-title info-box",
+                div("ROOT MEAN SQUARED ERROR:", 
+                span(style = "font-weight: bold",obj$rmse)),
+                br(),
+                div(`class` = "small-title",
+                "It is similar to MSE, but the square root returns the scale of the squared errors.")
+                )
+              ),
+              br(),
+              div(
+                div(
+                `class` = "special-title info-box",
+                div("RELATIVE ABSOLUTE ERROR:", 
+                span(style = "font-weight: bold",obj$rae)),
+                br(),
+                div(`class` = "small-title",
+                "It is the MAE relativized by dividing the MAE using the average as the value subtracted from the sum.")
+                )
+              )
+              )
+          ))
+    })
 
-
-  # New model accuracy
-  output$precision  <- renderText({
-    obj = nn()
-    paste(round(obj$precision, digits = 2), "%")
-  })
-
+        output$infoLoaded <- renderUI({
+          obj = nn()
+          loaded = !!obj$mse
+          if(loaded) {
+            return (div(
+                div(`class` = "loaded","Model loaded!"),
+            ))
+          } else {
+              return (div(
+                div(`class` = "error","Error, try to add the model again"),
+            ))
+          }
+    })
 
   ###########################################################################
-
+        
   # Predict #################################################################
   # Insert the initial values with csv
+    output$downloadData <- downloadHandler(
+      filename = function(){"resultForam.csv"}, 
+      content = function(fname){
+        obj = nn()
+        predict = neuralnet::compute(obj$nn, dfValues);
+        
+        desnormalize <- function(normalizedValue, originalValue) {
+          z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+          return(z)
+        }
+        write.csv(data.frame(cbind(dfValues, Valor_predito=desnormalize(predict$net.result, obj$cleanDf))), fname)
+      }
+    )
+
+    output$downloadPredicted <- renderUI({
+      inFile <- input$browseValues
+
+      if (is.null(inFile))
+         NULL
+      else div(style="padding-bottom: 20px", downloadButton("downloadData", "Download"))
+    })
+        
   output$valuesTable <- DT::renderDataTable({
     inFile <- input$browseValues
     
     if (is.null(inFile))
       return(NULL)
     
-    dfValues <- read.csv(inFile$datapath,
+    dfValues <<- read.csv(inFile$datapath,
                    header = TRUE,
                    sep = ",")
     
@@ -174,7 +253,7 @@ server <- function(input, output) {
 
     return(DT::datatable(cbind(dfValues, Valor_predito=desnormalize(predict$net.result, obj$cleanDf)), options = list(scrollX = TRUE)))
   })
-
+        
 
   ###########################################################################
 
@@ -201,22 +280,53 @@ server <- function(input, output) {
 
 
   # Anova tree ################################################################
-    anovaTree <<- eventReactive(input$goButton, {
-      if(input$rb=="new")
-        obj = neuralNetwork(
+    treeFunction <<- eventReactive(input$goButton, {
+      tempdf <- read.csv("last_forams_data_clean_last.csv",
+               header = TRUE,
+               sep = ",")
+
+      outputExpected = gsub("-", ".", paste("RES", input$category, input$depth , sep = "_", collapse = NULL), fixed = TRUE)
+      # Keep only the RES column of outputExpected
+      outputResult = tempdf[, outputExpected]
+      tempdf <- tempdf[, -grep("RES", colnames(tempdf))]
+      tempdf[outputExpected] <- outputResult
+
+      if(input$rb=="new") {
+        obj = anovaTree(
         paste("RES", input$category, input$depth , sep = "_", collapse = NULL), data())
-      else
-        obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+      }
+      else if(input$rb=="default"){
+        #obj = useNeuralNetwork(paste("RES", input$category, input$depth , sep = "_", collapse = NULL))
+        #obj = obj$foramTree
+        obj = anovaTree(
+        paste("RES", input$category, input$depth , sep = "_", collapse = NULL), tempdf)
+      }
 
       return (obj)
   })
 
   output$plotTree <- renderPlot({
-    obj = anovaTree()
+    tree = treeFunction()
 
     # Result Plot
-    rpart.plot(foramTree, type = 3, digits = 2)
+    rpart.plot(tree, type = 3, digits = 2)
   })
+
+    output$foramTreee <- DT::renderDataTable({
+        #obj = nn()
+            #Names of the attributes from csv
+        inFile <- input$browseNNValues
+
+        tree = treeFunction()
+        result <- predict(tree, dfValues)
+        
+        desnormalize <- function(normalizedValue, originalValue) {
+          z = normalizedValue * (max(originalValue) - min(originalValue)) + min(originalValue)
+          return(z)
+        }
+
+        return(DT::datatable(cbind(dfValues, Valor_predito=result), options = list(scrollX = TRUE)))
+      })
   #############################################################################
   # callModule(
   #   module = neural_network,

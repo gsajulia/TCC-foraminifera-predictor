@@ -1,3 +1,4 @@
+library("rpart")
 library("rpart.plot")
 
 anovaTree <- function(outputExpected, df) {

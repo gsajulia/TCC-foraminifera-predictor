@@ -4,6 +4,7 @@ library(stringr)
 library(caret)
 library(e1071)
 library(dplyr)
+library(Metrics)
 
 neuralNetwork <- function(outputExpected, df) {
     
@@ -95,8 +96,23 @@ neuralNetwork <- function(outputExpected, df) {
     #This if is to avoid the problem with division with 0 resulting in Inf
     deviation<- deviation[!abs(deviation) == Inf]
     accuracy=1-abs(mean(data.matrix(deviation)))
-    sprintf("Error: %f", nn$result.matrix[1,])
+    mse = mse(actual[,1], predicted[,1])
+    mae = mae(actual[,1], predicted[,1])
+    rmse = rmse(actual[,1], predicted[,1])
+    rae = rae(actual[,1], predicted[,1])
     sprintf("%1.2f%%", accuracy*100)
 
-    return(list(`accuracy`=accuracy*100, `precision`= precision*100, `table`=finalResult, `cleanDf`= df, `nn`= nn, `test`=test))
+
+    return(list(
+        `accuracy`=round(accuracy*100, 2), 
+        `precision`= round(precision*100, 2), 
+        `table`=finalResult, 
+        `cleanDf`= df, 
+        `nn`= nn, 
+        `test`=test,
+        `mse`=round(mse, 2),
+        `mae`=round(mae, 2),
+        `rmse`=round(rmse, 2),
+        `rae`=round(rae, 2)
+        ))
 }
